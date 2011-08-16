@@ -29,31 +29,31 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.txtServer = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.txtPort = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.txtUserId = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.txtPassword = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
+            this.btnConnect = new System.Windows.Forms.Button();
             this.txtDB = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.txtPassword = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.txtUserId = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txtPort = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txtServer = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnConnect = new System.Windows.Forms.Button();
             this.clbTables = new System.Windows.Forms.CheckedListBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.rbInline = new System.Windows.Forms.RadioButton();
-            this.rbStoredProc = new System.Windows.Forms.RadioButton();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
-            this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.btnGenerate = new System.Windows.Forms.Button();
-            this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cbxDelete = new System.Windows.Forms.CheckBox();
+            this.cbxUpdate = new System.Windows.Forms.CheckBox();
+            this.cbxInsert = new System.Windows.Forms.CheckBox();
+            this.cbxSelect = new System.Windows.Forms.CheckBox();
+            this.rbStoredProc = new System.Windows.Forms.RadioButton();
+            this.rbInline = new System.Windows.Forms.RadioButton();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.txtResult = new System.Windows.Forms.TextBox();
             this.btnSelectAll = new System.Windows.Forms.Button();
@@ -84,72 +84,23 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Connection Information";
             // 
-            // label1
+            // btnConnect
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(9, 22);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(50, 17);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Server";
+            this.btnConnect.Location = new System.Drawing.Point(778, 21);
+            this.btnConnect.Name = "btnConnect";
+            this.btnConnect.Size = new System.Drawing.Size(75, 23);
+            this.btnConnect.TabIndex = 10;
+            this.btnConnect.Text = "Connect";
+            this.btnConnect.UseVisualStyleBackColor = true;
+            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
             // 
-            // txtServer
+            // txtDB
             // 
-            this.txtServer.Location = new System.Drawing.Point(67, 23);
-            this.txtServer.Name = "txtServer";
-            this.txtServer.Size = new System.Drawing.Size(100, 22);
-            this.txtServer.TabIndex = 1;
-            this.txtServer.Text = "localhost";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(173, 26);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(34, 17);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Port";
-            // 
-            // txtPort
-            // 
-            this.txtPort.Location = new System.Drawing.Point(213, 23);
-            this.txtPort.Name = "txtPort";
-            this.txtPort.Size = new System.Drawing.Size(50, 22);
-            this.txtPort.TabIndex = 3;
-            this.txtPort.Text = "3306";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(275, 26);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(55, 17);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "User ID";
-            // 
-            // txtUserId
-            // 
-            this.txtUserId.Location = new System.Drawing.Point(341, 23);
-            this.txtUserId.Name = "txtUserId";
-            this.txtUserId.Size = new System.Drawing.Size(72, 22);
-            this.txtUserId.TabIndex = 5;
-            this.txtUserId.Text = "root";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(419, 26);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(69, 17);
-            this.label4.TabIndex = 6;
-            this.label4.Text = "Password";
-            // 
-            // txtPassword
-            // 
-            this.txtPassword.Location = new System.Drawing.Point(494, 23);
-            this.txtPassword.Name = "txtPassword";
-            this.txtPassword.Size = new System.Drawing.Size(73, 22);
-            this.txtPassword.TabIndex = 7;
+            this.txtDB.Location = new System.Drawing.Point(609, 23);
+            this.txtDB.Name = "txtDB";
+            this.txtDB.Size = new System.Drawing.Size(150, 22);
+            this.txtDB.TabIndex = 9;
+            this.txtDB.Text = "bbk";
             // 
             // label5
             // 
@@ -160,13 +111,72 @@
             this.label5.TabIndex = 8;
             this.label5.Text = "DB";
             // 
-            // txtDB
+            // txtPassword
             // 
-            this.txtDB.Location = new System.Drawing.Point(609, 23);
-            this.txtDB.Name = "txtDB";
-            this.txtDB.Size = new System.Drawing.Size(150, 22);
-            this.txtDB.TabIndex = 9;
-            this.txtDB.Text = "bbk";
+            this.txtPassword.Location = new System.Drawing.Point(494, 23);
+            this.txtPassword.Name = "txtPassword";
+            this.txtPassword.Size = new System.Drawing.Size(73, 22);
+            this.txtPassword.TabIndex = 7;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(419, 26);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(69, 17);
+            this.label4.TabIndex = 6;
+            this.label4.Text = "Password";
+            // 
+            // txtUserId
+            // 
+            this.txtUserId.Location = new System.Drawing.Point(341, 23);
+            this.txtUserId.Name = "txtUserId";
+            this.txtUserId.Size = new System.Drawing.Size(72, 22);
+            this.txtUserId.TabIndex = 5;
+            this.txtUserId.Text = "root";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(275, 26);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(55, 17);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "User ID";
+            // 
+            // txtPort
+            // 
+            this.txtPort.Location = new System.Drawing.Point(213, 23);
+            this.txtPort.Name = "txtPort";
+            this.txtPort.Size = new System.Drawing.Size(50, 22);
+            this.txtPort.TabIndex = 3;
+            this.txtPort.Text = "3306";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(173, 26);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(34, 17);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "Port";
+            // 
+            // txtServer
+            // 
+            this.txtServer.Location = new System.Drawing.Point(67, 23);
+            this.txtServer.Name = "txtServer";
+            this.txtServer.Size = new System.Drawing.Size(100, 22);
+            this.txtServer.TabIndex = 1;
+            this.txtServer.Text = "localhost";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(9, 22);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(50, 17);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Server";
             // 
             // menuStrip1
             // 
@@ -187,21 +197,17 @@
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(40, 22);
             this.fileToolStripMenuItem.Text = "File";
             // 
+            // saveAsToolStripMenuItem
+            // 
+            this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.saveAsToolStripMenuItem.Text = "Save As";
+            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(48, 22);
             this.helpToolStripMenuItem.Text = "Help";
-            // 
-            // btnConnect
-            // 
-            this.btnConnect.Location = new System.Drawing.Point(778, 21);
-            this.btnConnect.Name = "btnConnect";
-            this.btnConnect.Size = new System.Drawing.Size(75, 23);
-            this.btnConnect.TabIndex = 10;
-            this.btnConnect.Text = "Connect";
-            this.btnConnect.UseVisualStyleBackColor = true;
-            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
             // 
             // clbTables
             // 
@@ -225,10 +231,10 @@
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.btnGenerate);
-            this.groupBox3.Controls.Add(this.checkBox4);
-            this.groupBox3.Controls.Add(this.checkBox3);
-            this.groupBox3.Controls.Add(this.checkBox2);
-            this.groupBox3.Controls.Add(this.checkBox1);
+            this.groupBox3.Controls.Add(this.cbxDelete);
+            this.groupBox3.Controls.Add(this.cbxUpdate);
+            this.groupBox3.Controls.Add(this.cbxInsert);
+            this.groupBox3.Controls.Add(this.cbxSelect);
             this.groupBox3.Controls.Add(this.rbStoredProc);
             this.groupBox3.Controls.Add(this.rbInline);
             this.groupBox3.Location = new System.Drawing.Point(188, 99);
@@ -236,18 +242,57 @@
             this.groupBox3.Size = new System.Drawing.Size(692, 51);
             this.groupBox3.TabIndex = 4;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Select Action";
+            this.groupBox3.Text = "Options";
             // 
-            // rbInline
+            // btnGenerate
             // 
-            this.rbInline.AutoSize = true;
-            this.rbInline.Location = new System.Drawing.Point(24, 18);
-            this.rbInline.Name = "rbInline";
-            this.rbInline.Size = new System.Drawing.Size(105, 21);
-            this.rbInline.TabIndex = 0;
-            this.rbInline.TabStop = true;
-            this.rbInline.Text = "Inline Query";
-            this.rbInline.UseVisualStyleBackColor = true;
+            this.btnGenerate.Location = new System.Drawing.Point(592, 16);
+            this.btnGenerate.Name = "btnGenerate";
+            this.btnGenerate.Size = new System.Drawing.Size(94, 23);
+            this.btnGenerate.TabIndex = 6;
+            this.btnGenerate.Text = "Generate";
+            this.btnGenerate.UseVisualStyleBackColor = true;
+            this.btnGenerate.Click += new System.EventHandler(this.btnGenerate_Click);
+            // 
+            // cbxDelete
+            // 
+            this.cbxDelete.AutoSize = true;
+            this.cbxDelete.Location = new System.Drawing.Point(515, 18);
+            this.cbxDelete.Name = "cbxDelete";
+            this.cbxDelete.Size = new System.Drawing.Size(71, 21);
+            this.cbxDelete.TabIndex = 5;
+            this.cbxDelete.Text = "Delete";
+            this.cbxDelete.UseVisualStyleBackColor = true;
+            // 
+            // cbxUpdate
+            // 
+            this.cbxUpdate.AutoSize = true;
+            this.cbxUpdate.Location = new System.Drawing.Point(433, 18);
+            this.cbxUpdate.Name = "cbxUpdate";
+            this.cbxUpdate.Size = new System.Drawing.Size(76, 21);
+            this.cbxUpdate.TabIndex = 4;
+            this.cbxUpdate.Text = "Update";
+            this.cbxUpdate.UseVisualStyleBackColor = true;
+            // 
+            // cbxInsert
+            // 
+            this.cbxInsert.AutoSize = true;
+            this.cbxInsert.Location = new System.Drawing.Point(368, 18);
+            this.cbxInsert.Name = "cbxInsert";
+            this.cbxInsert.Size = new System.Drawing.Size(65, 21);
+            this.cbxInsert.TabIndex = 3;
+            this.cbxInsert.Text = "Insert";
+            this.cbxInsert.UseVisualStyleBackColor = true;
+            // 
+            // cbxSelect
+            // 
+            this.cbxSelect.AutoSize = true;
+            this.cbxSelect.Location = new System.Drawing.Point(293, 18);
+            this.cbxSelect.Name = "cbxSelect";
+            this.cbxSelect.Size = new System.Drawing.Size(69, 21);
+            this.cbxSelect.TabIndex = 2;
+            this.cbxSelect.Text = "Select";
+            this.cbxSelect.UseVisualStyleBackColor = true;
             // 
             // rbStoredProc
             // 
@@ -260,69 +305,16 @@
             this.rbStoredProc.Text = "Stored Procedure";
             this.rbStoredProc.UseVisualStyleBackColor = true;
             // 
-            // checkBox1
+            // rbInline
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Checked = true;
-            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox1.Location = new System.Drawing.Point(293, 18);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(69, 21);
-            this.checkBox1.TabIndex = 2;
-            this.checkBox1.Text = "Select";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            // 
-            // checkBox2
-            // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Checked = true;
-            this.checkBox2.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox2.Location = new System.Drawing.Point(368, 18);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(65, 21);
-            this.checkBox2.TabIndex = 3;
-            this.checkBox2.Text = "Insert";
-            this.checkBox2.UseVisualStyleBackColor = true;
-            // 
-            // checkBox3
-            // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Checked = true;
-            this.checkBox3.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox3.Location = new System.Drawing.Point(433, 18);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(76, 21);
-            this.checkBox3.TabIndex = 4;
-            this.checkBox3.Text = "Update";
-            this.checkBox3.UseVisualStyleBackColor = true;
-            // 
-            // checkBox4
-            // 
-            this.checkBox4.AutoSize = true;
-            this.checkBox4.Checked = true;
-            this.checkBox4.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox4.Location = new System.Drawing.Point(515, 18);
-            this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(71, 21);
-            this.checkBox4.TabIndex = 5;
-            this.checkBox4.Text = "Delete";
-            this.checkBox4.UseVisualStyleBackColor = true;
-            // 
-            // btnGenerate
-            // 
-            this.btnGenerate.Location = new System.Drawing.Point(592, 16);
-            this.btnGenerate.Name = "btnGenerate";
-            this.btnGenerate.Size = new System.Drawing.Size(94, 23);
-            this.btnGenerate.TabIndex = 6;
-            this.btnGenerate.Text = "Generate";
-            this.btnGenerate.UseVisualStyleBackColor = true;
-            this.btnGenerate.Click += new System.EventHandler(this.btnGenerate_Click);
-            // 
-            // saveAsToolStripMenuItem
-            // 
-            this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.saveAsToolStripMenuItem.Text = "Save As";
+            this.rbInline.AutoSize = true;
+            this.rbInline.Location = new System.Drawing.Point(24, 18);
+            this.rbInline.Name = "rbInline";
+            this.rbInline.Size = new System.Drawing.Size(105, 21);
+            this.rbInline.TabIndex = 0;
+            this.rbInline.TabStop = true;
+            this.rbInline.Text = "Inline Query";
+            this.rbInline.UseVisualStyleBackColor = true;
             // 
             // groupBox4
             // 
@@ -338,10 +330,12 @@
             // 
             this.txtResult.BackColor = System.Drawing.Color.White;
             this.txtResult.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtResult.Font = new System.Drawing.Font("Verdana", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtResult.Location = new System.Drawing.Point(3, 18);
             this.txtResult.Multiline = true;
             this.txtResult.Name = "txtResult";
             this.txtResult.ReadOnly = true;
+            this.txtResult.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.txtResult.Size = new System.Drawing.Size(686, 366);
             this.txtResult.TabIndex = 0;
             // 
@@ -407,10 +401,10 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.RadioButton rbStoredProc;
         private System.Windows.Forms.RadioButton rbInline;
-        private System.Windows.Forms.CheckBox checkBox4;
-        private System.Windows.Forms.CheckBox checkBox3;
-        private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox cbxDelete;
+        private System.Windows.Forms.CheckBox cbxUpdate;
+        private System.Windows.Forms.CheckBox cbxInsert;
+        private System.Windows.Forms.CheckBox cbxSelect;
         private System.Windows.Forms.Button btnGenerate;
         private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
         private System.Windows.Forms.GroupBox groupBox4;
