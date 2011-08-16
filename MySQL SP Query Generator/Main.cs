@@ -57,6 +57,8 @@ namespace MySQL_SP_Query_Generator
 
         private void BindTables()
         {
+            clbTables.Items.Clear();
+
             string query = string.Format("show tables from {0}", database);
             MySqlCommand cmd = new MySqlCommand(query, conn);
             MySqlDataAdapter adapter = new MySqlDataAdapter();
@@ -120,6 +122,7 @@ namespace MySQL_SP_Query_Generator
             }
             else if (rbStoredProc.Checked == true)
             {
+                txtResult.AppendText(" DELIMITER $$ ");
                 this.GenerateStoredProcedure();
             }
         }
@@ -148,24 +151,35 @@ namespace MySQL_SP_Query_Generator
                     adapter.SelectCommand = cmd;
                     adapter.Fill(dtInfo);
 
+                    string mode = string.Empty;
+                    if (rbCreate.Checked == true)
+                    {
+                        mode = "CREATE";
+                    }
+
+                    if (rbAlter.Checked == true)
+                    {
+                        mode = string.Format("CREATE DEFINER=`{0}`@`{1}`",userId,server);
+                    }
+
                     if (cbxSelect.Checked == true)
                     {
-                        this.GenerateSelectStoredProcedure(tableName, dtInfo);
+                        this.GenerateSelectStoredProcedure(tableName, dtInfo, mode);
                     }
 
                     if (cbxInsert.Checked == true)
                     {
-                        this.GenerateInsertStoredProcedure(tableName, dtInfo);
+                        this.GenerateInsertStoredProcedure(tableName, dtInfo, mode);
                     }
 
                     if (cbxUpdate.Checked == true)
                     {
-                        this.GenerateUpdateStoredProcedure(tableName, dtInfo);
+                        this.GenerateUpdateStoredProcedure(tableName, dtInfo, mode);
                     }
 
                     if (cbxDelete.Checked == true)
                     {
-                        this.GenerateDeleteStoredProcedure(tableName, dtInfo);
+                        this.GenerateDeleteStoredProcedure(tableName, dtInfo, mode);
                     }
 
                 }
@@ -182,14 +196,15 @@ namespace MySQL_SP_Query_Generator
             conn = null;
         }
 
-        private void GenerateSelectStoredProcedure(string tableName, DataTable tableInfo)
+        private void GenerateSelectStoredProcedure(string tableName, DataTable tableInfo, string mode)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine(" DELIMITER $$ ");
-            sb.AppendLine(string.Format(" CREATE PROCEDURE `{0}`.`{1}_Get`() ", database, tableName));
+            sb.AppendLine(string.Format(" {0} PROCEDURE `{1}`.`{2}_Get`() ", mode, database, tableName));
             sb.AppendLine(" BEGIN ");
             sb.AppendLine(" SELECT ");
             string columns = string.Empty;
+
+            
 
             for (int i = 0; i < tableInfo.Rows.Count; i++)
             {
@@ -205,18 +220,17 @@ namespace MySQL_SP_Query_Generator
             sb.AppendLine(columns);
 
             sb.AppendLine(string.Format(" From {0} ; ", tableName));
-            sb.AppendLine(" END ");
+            sb.AppendLine(" END $$ ");
             sb.AppendLine(Environment.NewLine);
 
             txtResult.AppendText(sb.ToString());
         }
 
-        private void GenerateInsertStoredProcedure(string tableName, DataTable tableInfo)
+        private void GenerateInsertStoredProcedure(string tableName, DataTable tableInfo, string mode)
         {
             string columns = string.Empty;
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine(" DELIMITER $$ ");
-            sb.AppendLine(string.Format(" CREATE PROCEDURE `{0}`.`{1}_Add`( ", database, tableName));
+            sb.AppendLine(string.Format(" {0} PROCEDURE `{1}`.`{2}_Add`( ", mode, database, tableName));
 
             for (int i = 0; i < tableInfo.Rows.Count; i++)
             {
@@ -263,19 +277,18 @@ namespace MySQL_SP_Query_Generator
             }
 
             sb.AppendLine(columns);
-            sb.AppendLine(" END ");
+            sb.AppendLine(" END $$ ");
             sb.AppendLine(Environment.NewLine);
 
             txtResult.AppendText(sb.ToString());
 
         }
 
-        private void GenerateUpdateStoredProcedure(string tableName, DataTable tableInfo)
+        private void GenerateUpdateStoredProcedure(string tableName, DataTable tableInfo, string mode)
         {
             string columns = string.Empty;
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine(" DELIMITER $$ ");
-            sb.AppendLine(string.Format(" CREATE PROCEDURE `{0}`.`{1}_Update`( ", database, tableName));
+            sb.AppendLine(string.Format(" {0} PROCEDURE `{1}`.`{2}_Update`( ", mode, database, tableName));
 
             for (int i = 0; i < tableInfo.Rows.Count; i++)
             {
@@ -308,20 +321,19 @@ namespace MySQL_SP_Query_Generator
 
             sb.AppendLine(columns);
             sb.AppendLine(" WHERE COLUMN = SOMEVALUE ;");
-            sb.AppendLine(" END ");
+            sb.AppendLine(" END $$ ");
             sb.AppendLine(Environment.NewLine);
 
             txtResult.AppendText(sb.ToString());
         }
 
-        private void GenerateDeleteStoredProcedure(string tableName, DataTable tableInfo)
+        private void GenerateDeleteStoredProcedure(string tableName, DataTable tableInfo, string mode)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine(" DELIMITER $$ ");
-            sb.AppendLine(string.Format(" CREATE PROCEDURE `{0}`.`{1}_Delete`() ", database, tableName));
+            sb.AppendLine(string.Format(" {0} PROCEDURE `{1}`.`{2}_Delete`() ", mode, database, tableName));
             sb.AppendLine(" BEGIN ");
             sb.AppendLine(string.Format(" DELETE FROM {0} WHERE COLUMN = SOMEVALUE ;", tableName));
-            sb.AppendLine(" END ");
+            sb.AppendLine(" END $$ ");
             txtResult.AppendText(sb.ToString());
         }
     }
