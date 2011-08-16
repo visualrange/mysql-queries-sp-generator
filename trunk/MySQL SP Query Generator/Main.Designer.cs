@@ -57,11 +57,15 @@
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.txtResult = new System.Windows.Forms.TextBox();
             this.btnSelectAll = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.rbCreate = new System.Windows.Forms.RadioButton();
+            this.rbAlter = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -211,10 +215,12 @@
             // 
             // clbTables
             // 
+            this.clbTables.CheckOnClick = true;
             this.clbTables.Dock = System.Windows.Forms.DockStyle.Fill;
             this.clbTables.FormattingEnabled = true;
             this.clbTables.Location = new System.Drawing.Point(3, 18);
             this.clbTables.Name = "clbTables";
+            this.clbTables.ScrollAlwaysVisible = true;
             this.clbTables.Size = new System.Drawing.Size(161, 396);
             this.clbTables.TabIndex = 2;
             // 
@@ -231,22 +237,23 @@
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.btnGenerate);
+            this.groupBox3.Controls.Add(this.panel1);
             this.groupBox3.Controls.Add(this.cbxDelete);
             this.groupBox3.Controls.Add(this.cbxUpdate);
             this.groupBox3.Controls.Add(this.cbxInsert);
             this.groupBox3.Controls.Add(this.cbxSelect);
             this.groupBox3.Controls.Add(this.rbStoredProc);
             this.groupBox3.Controls.Add(this.rbInline);
-            this.groupBox3.Location = new System.Drawing.Point(188, 99);
+            this.groupBox3.Location = new System.Drawing.Point(188, 87);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(692, 51);
+            this.groupBox3.Size = new System.Drawing.Size(689, 75);
             this.groupBox3.TabIndex = 4;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Options";
             // 
             // btnGenerate
             // 
-            this.btnGenerate.Location = new System.Drawing.Point(592, 16);
+            this.btnGenerate.Location = new System.Drawing.Point(583, 25);
             this.btnGenerate.Name = "btnGenerate";
             this.btnGenerate.Size = new System.Drawing.Size(94, 23);
             this.btnGenerate.TabIndex = 6;
@@ -257,7 +264,7 @@
             // cbxDelete
             // 
             this.cbxDelete.AutoSize = true;
-            this.cbxDelete.Location = new System.Drawing.Point(515, 18);
+            this.cbxDelete.Location = new System.Drawing.Point(503, 42);
             this.cbxDelete.Name = "cbxDelete";
             this.cbxDelete.Size = new System.Drawing.Size(71, 21);
             this.cbxDelete.TabIndex = 5;
@@ -267,7 +274,7 @@
             // cbxUpdate
             // 
             this.cbxUpdate.AutoSize = true;
-            this.cbxUpdate.Location = new System.Drawing.Point(433, 18);
+            this.cbxUpdate.Location = new System.Drawing.Point(418, 44);
             this.cbxUpdate.Name = "cbxUpdate";
             this.cbxUpdate.Size = new System.Drawing.Size(76, 21);
             this.cbxUpdate.TabIndex = 4;
@@ -277,7 +284,7 @@
             // cbxInsert
             // 
             this.cbxInsert.AutoSize = true;
-            this.cbxInsert.Location = new System.Drawing.Point(368, 18);
+            this.cbxInsert.Location = new System.Drawing.Point(503, 15);
             this.cbxInsert.Name = "cbxInsert";
             this.cbxInsert.Size = new System.Drawing.Size(65, 21);
             this.cbxInsert.TabIndex = 3;
@@ -287,7 +294,7 @@
             // cbxSelect
             // 
             this.cbxSelect.AutoSize = true;
-            this.cbxSelect.Location = new System.Drawing.Point(293, 18);
+            this.cbxSelect.Location = new System.Drawing.Point(418, 17);
             this.cbxSelect.Name = "cbxSelect";
             this.cbxSelect.Size = new System.Drawing.Size(69, 21);
             this.cbxSelect.TabIndex = 2;
@@ -319,9 +326,9 @@
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.txtResult);
-            this.groupBox4.Location = new System.Drawing.Point(188, 158);
+            this.groupBox4.Location = new System.Drawing.Point(188, 202);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(692, 387);
+            this.groupBox4.Size = new System.Drawing.Size(692, 343);
             this.groupBox4.TabIndex = 5;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Result";
@@ -336,7 +343,7 @@
             this.txtResult.Name = "txtResult";
             this.txtResult.ReadOnly = true;
             this.txtResult.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtResult.Size = new System.Drawing.Size(686, 366);
+            this.txtResult.Size = new System.Drawing.Size(686, 322);
             this.txtResult.TabIndex = 0;
             // 
             // btnSelectAll
@@ -348,6 +355,37 @@
             this.btnSelectAll.Text = "Select All";
             this.btnSelectAll.UseVisualStyleBackColor = true;
             this.btnSelectAll.Click += new System.EventHandler(this.btnSelectAll_Click);
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.rbAlter);
+            this.panel1.Controls.Add(this.rbCreate);
+            this.panel1.Location = new System.Drawing.Point(19, 41);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(257, 30);
+            this.panel1.TabIndex = 6;
+            // 
+            // rbCreate
+            // 
+            this.rbCreate.AutoSize = true;
+            this.rbCreate.Location = new System.Drawing.Point(4, 6);
+            this.rbCreate.Name = "rbCreate";
+            this.rbCreate.Size = new System.Drawing.Size(71, 21);
+            this.rbCreate.TabIndex = 0;
+            this.rbCreate.TabStop = true;
+            this.rbCreate.Text = "Create";
+            this.rbCreate.UseVisualStyleBackColor = true;
+            // 
+            // rbAlter
+            // 
+            this.rbAlter.AutoSize = true;
+            this.rbAlter.Location = new System.Drawing.Point(116, 6);
+            this.rbAlter.Name = "rbAlter";
+            this.rbAlter.Size = new System.Drawing.Size(58, 21);
+            this.rbAlter.TabIndex = 1;
+            this.rbAlter.TabStop = true;
+            this.rbAlter.Text = "Alter";
+            this.rbAlter.UseVisualStyleBackColor = true;
             // 
             // Main
             // 
@@ -374,6 +412,8 @@
             this.groupBox3.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -410,6 +450,9 @@
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.TextBox txtResult;
         private System.Windows.Forms.Button btnSelectAll;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.RadioButton rbAlter;
+        private System.Windows.Forms.RadioButton rbCreate;
     }
 }
 
