@@ -122,7 +122,8 @@ namespace MySQL_SP_Query_Generator
             }
             else if (rbStoredProc.Checked == true)
             {
-                txtResult.AppendText(" DELIMITER $$ ");
+                txtResult.AppendText(string.Format(" USE {0};", database));
+                txtResult.AppendText(Environment.NewLine);
                 this.GenerateStoredProcedure();
             }
         }
@@ -159,7 +160,7 @@ namespace MySQL_SP_Query_Generator
 
                     if (rbAlter.Checked == true)
                     {
-                        mode = string.Format("CREATE DEFINER=`{0}`@`{1}`",userId,server);
+                        mode = string.Format("CREATE DEFINER=`{0}`@`{1}`", userId, server);
                     }
 
                     if (cbxSelect.Checked == true)
@@ -198,39 +199,53 @@ namespace MySQL_SP_Query_Generator
 
         private void GenerateSelectStoredProcedure(string tableName, DataTable tableInfo, string mode)
         {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine(string.Format(" {0} PROCEDURE `{1}`.`{2}_Get`() ", mode, database, tableName));
-            sb.AppendLine(" BEGIN ");
-            sb.AppendLine(" SELECT ");
-            string columns = string.Empty;
+            DataRow[] rows = tableInfo.Select(" Key <>'' ");
 
-            
-
-            for (int i = 0; i < tableInfo.Rows.Count; i++)
+            for (int a = 0; a < rows.Length; a++)
             {
-                if (i == (tableInfo.Rows.Count - 1))
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine(" DELIMITER ; ");
+                sb.AppendLine(string.Format("DROP procedure IF EXISTS `{0}_get_by_{1}`;", tableName, rows[a]["Field"].ToString()));
+                sb.AppendLine(" DELIMITER $$ ");
+                sb.AppendLine(string.Format(" {0} PROCEDURE `{1}`.`{2}_get_by_{3}`() ", mode, database, tableName,rows[a]["Field"].ToString()));
+                sb.AppendLine(" BEGIN ");
+                sb.AppendLine(" SELECT ");
+                string columns = string.Empty;
+
+
+
+                for (int i = 0; i < tableInfo.Rows.Count; i++)
                 {
-                    columns += tableInfo.Rows[i]["Field"].ToString();
-                    continue;
+                    if (i == (tableInfo.Rows.Count - 1))
+                    {
+                        columns += tableInfo.Rows[i]["Field"].ToString();
+                        continue;
+                    }
+
+                    columns += tableInfo.Rows[i]["Field"].ToString() + ", ";
                 }
 
-                columns += tableInfo.Rows[i]["Field"].ToString() + ", ";
+                sb.AppendLine(columns);
+
+                sb.AppendLine(string.Format(" From {0} ; ", tableName));
+                sb.AppendLine(" END $$ ");
+                sb.AppendLine(Environment.NewLine);
+
+                txtResult.AppendText(sb.ToString());
             }
 
-            sb.AppendLine(columns);
 
-            sb.AppendLine(string.Format(" From {0} ; ", tableName));
-            sb.AppendLine(" END $$ ");
-            sb.AppendLine(Environment.NewLine);
-
-            txtResult.AppendText(sb.ToString());
         }
 
         private void GenerateInsertStoredProcedure(string tableName, DataTable tableInfo, string mode)
         {
+
             string columns = string.Empty;
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine(string.Format(" {0} PROCEDURE `{1}`.`{2}_Add`( ", mode, database, tableName));
+            sb.AppendLine(" DELIMITER ; ");
+            sb.AppendLine(string.Format("DROP procedure IF EXISTS `{0}_add`;", tableName));
+            sb.AppendLine(" DELIMITER $$ ");
+            sb.AppendLine(string.Format(" {0} PROCEDURE `{1}`.`{2}_add`( ", mode, database, tableName));
 
             for (int i = 0; i < tableInfo.Rows.Count; i++)
             {
@@ -286,55 +301,72 @@ namespace MySQL_SP_Query_Generator
 
         private void GenerateUpdateStoredProcedure(string tableName, DataTable tableInfo, string mode)
         {
-            string columns = string.Empty;
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine(string.Format(" {0} PROCEDURE `{1}`.`{2}_Update`( ", mode, database, tableName));
+            DataRow[] rows = tableInfo.Select(" Key <>'' ");
 
-            for (int i = 0; i < tableInfo.Rows.Count; i++)
+            for (int a = 0; a < rows.Length; a++)
             {
-                if (i == (tableInfo.Rows.Count - 1))
+
+                string columns = string.Empty;
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine(" DELIMITER ; ");
+                sb.AppendLine(string.Format("DROP procedure IF EXISTS `{0}_update_by_{1}`;", tableName,rows[a]["Field"].ToString()));
+                sb.AppendLine(" DELIMITER $$ ");
+                sb.AppendLine(string.Format(" {0} PROCEDURE `{1}`.`{2}_update_by_{3}`( ", mode, database, tableName, rows[a]["Field"].ToString()));
+
+                for (int i = 0; i < tableInfo.Rows.Count; i++)
                 {
-                    columns += " in " + tableInfo.Rows[i]["Field"].ToString() + " " + tableInfo.Rows[i]["Type"].ToString();
-                    continue;
+                    if (i == (tableInfo.Rows.Count - 1))
+                    {
+                        columns += " in " + tableInfo.Rows[i]["Field"].ToString() + " " + tableInfo.Rows[i]["Type"].ToString();
+                        continue;
+                    }
+
+                    columns += " in " + tableInfo.Rows[i]["Field"].ToString() + " " + tableInfo.Rows[i]["Type"].ToString() + ", ";
                 }
 
-                columns += " in " + tableInfo.Rows[i]["Field"].ToString() + " " + tableInfo.Rows[i]["Type"].ToString() + ", ";
-            }
+                sb.AppendLine(columns);
+                sb.AppendLine(")");
+                sb.AppendLine(" BEGIN ");
 
-            sb.AppendLine(columns);
-            sb.AppendLine(")");
-            sb.AppendLine(" BEGIN ");
+                sb.AppendLine(string.Format(" UPDATE {0} SET ", tableName));
 
-            sb.AppendLine(string.Format(" UPDATE {0} SET ", tableName));
-
-            columns = string.Empty;
-            for (int i = 0; i < tableInfo.Rows.Count; i++)
-            {
-                if (i == (tableInfo.Rows.Count - 1))
+                columns = string.Empty;
+                for (int i = 0; i < tableInfo.Rows.Count; i++)
                 {
-                    columns += "`" + tableInfo.Rows[i]["Field"].ToString() + "` = " + tableInfo.Rows[i]["Field"].ToString() ;
-                    continue;
+                    if (i == (tableInfo.Rows.Count - 1))
+                    {
+                        columns += "`" + tableInfo.Rows[i]["Field"].ToString() + "` = " + tableInfo.Rows[i]["Field"].ToString();
+                        continue;
+                    }
+
+                    columns += " `" + tableInfo.Rows[i]["Field"].ToString() + "` = " + tableInfo.Rows[i]["Field"].ToString() + ", ";
                 }
 
-                columns += " `" + tableInfo.Rows[i]["Field"].ToString() + "` = " + tableInfo.Rows[i]["Field"].ToString() + ", ";
+                sb.AppendLine(columns);
+                sb.AppendLine(string.Format(" WHERE `{0}` = {1} ;", rows[a]["Field"].ToString(), rows[a]["Field"].ToString()));
+                sb.AppendLine(" END $$ ");
+                sb.AppendLine(Environment.NewLine);
+
+                txtResult.AppendText(sb.ToString());
             }
-
-            sb.AppendLine(columns);
-            sb.AppendLine(" WHERE COLUMN = SOMEVALUE ;");
-            sb.AppendLine(" END $$ ");
-            sb.AppendLine(Environment.NewLine);
-
-            txtResult.AppendText(sb.ToString());
         }
 
         private void GenerateDeleteStoredProcedure(string tableName, DataTable tableInfo, string mode)
         {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine(string.Format(" {0} PROCEDURE `{1}`.`{2}_Delete`() ", mode, database, tableName));
-            sb.AppendLine(" BEGIN ");
-            sb.AppendLine(string.Format(" DELETE FROM {0} WHERE COLUMN = SOMEVALUE ;", tableName));
-            sb.AppendLine(" END $$ ");
-            txtResult.AppendText(sb.ToString());
+            DataRow[] rows = tableInfo.Select(" Key <>'' ");
+
+            for (int a = 0; a < rows.Length; a++)
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine(" DELIMITER ; ");
+                sb.AppendLine(string.Format(" DROP procedure IF EXISTS `{0}_delete_by_{1}`; ", tableName,rows[a]["Field"].ToString()));
+                sb.AppendLine(" DELIMITER $$ ");
+                sb.AppendLine(string.Format(" {0} PROCEDURE `{1}`.`{2}_delete_by_{3}`() ", mode, database, tableName, rows[a]["Field"].ToString()));
+                sb.AppendLine(" BEGIN ");
+                sb.AppendLine(string.Format(" DELETE FROM {0} WHERE `{0}` = {1} ;", tableName, rows[a]["Field"].ToString(), rows[a]["Field"].ToString()));
+                sb.AppendLine(" END $$ ");
+                txtResult.AppendText(sb.ToString());
+            }
         }
     }
 }

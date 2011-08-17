@@ -48,6 +48,9 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.btnGenerate = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.rbAlter = new System.Windows.Forms.RadioButton();
+            this.rbCreate = new System.Windows.Forms.RadioButton();
             this.cbxDelete = new System.Windows.Forms.CheckBox();
             this.cbxUpdate = new System.Windows.Forms.CheckBox();
             this.cbxInsert = new System.Windows.Forms.CheckBox();
@@ -57,15 +60,12 @@
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.txtResult = new System.Windows.Forms.TextBox();
             this.btnSelectAll = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.rbCreate = new System.Windows.Forms.RadioButton();
-            this.rbAlter = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
-            this.groupBox4.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -104,7 +104,7 @@
             this.txtDB.Name = "txtDB";
             this.txtDB.Size = new System.Drawing.Size(150, 22);
             this.txtDB.TabIndex = 9;
-            this.txtDB.Text = "bbk";
+            this.txtDB.Text = "wordpress321";
             // 
             // label5
             // 
@@ -261,6 +261,37 @@
             this.btnGenerate.UseVisualStyleBackColor = true;
             this.btnGenerate.Click += new System.EventHandler(this.btnGenerate_Click);
             // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.rbAlter);
+            this.panel1.Controls.Add(this.rbCreate);
+            this.panel1.Location = new System.Drawing.Point(19, 41);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(257, 30);
+            this.panel1.TabIndex = 6;
+            // 
+            // rbAlter
+            // 
+            this.rbAlter.AutoSize = true;
+            this.rbAlter.Location = new System.Drawing.Point(116, 6);
+            this.rbAlter.Name = "rbAlter";
+            this.rbAlter.Size = new System.Drawing.Size(58, 21);
+            this.rbAlter.TabIndex = 1;
+            this.rbAlter.TabStop = true;
+            this.rbAlter.Text = "Alter";
+            this.rbAlter.UseVisualStyleBackColor = true;
+            // 
+            // rbCreate
+            // 
+            this.rbCreate.AutoSize = true;
+            this.rbCreate.Location = new System.Drawing.Point(4, 6);
+            this.rbCreate.Name = "rbCreate";
+            this.rbCreate.Size = new System.Drawing.Size(71, 21);
+            this.rbCreate.TabIndex = 0;
+            this.rbCreate.TabStop = true;
+            this.rbCreate.Text = "Create";
+            this.rbCreate.UseVisualStyleBackColor = true;
+            // 
             // cbxDelete
             // 
             this.cbxDelete.AutoSize = true;
@@ -356,37 +387,6 @@
             this.btnSelectAll.UseVisualStyleBackColor = true;
             this.btnSelectAll.Click += new System.EventHandler(this.btnSelectAll_Click);
             // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.rbAlter);
-            this.panel1.Controls.Add(this.rbCreate);
-            this.panel1.Location = new System.Drawing.Point(19, 41);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(257, 30);
-            this.panel1.TabIndex = 6;
-            // 
-            // rbCreate
-            // 
-            this.rbCreate.AutoSize = true;
-            this.rbCreate.Location = new System.Drawing.Point(4, 6);
-            this.rbCreate.Name = "rbCreate";
-            this.rbCreate.Size = new System.Drawing.Size(71, 21);
-            this.rbCreate.TabIndex = 0;
-            this.rbCreate.TabStop = true;
-            this.rbCreate.Text = "Create";
-            this.rbCreate.UseVisualStyleBackColor = true;
-            // 
-            // rbAlter
-            // 
-            this.rbAlter.AutoSize = true;
-            this.rbAlter.Location = new System.Drawing.Point(116, 6);
-            this.rbAlter.Name = "rbAlter";
-            this.rbAlter.Size = new System.Drawing.Size(58, 21);
-            this.rbAlter.TabIndex = 1;
-            this.rbAlter.TabStop = true;
-            this.rbAlter.Text = "Alter";
-            this.rbAlter.UseVisualStyleBackColor = true;
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -410,10 +410,10 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
