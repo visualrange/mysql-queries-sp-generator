@@ -16,3 +16,4 @@ D:\Irfan\DesktopProjects\mysql-queries-sp-generator\trunk\MySQL SP Query Generat
 D:\Irfan\DesktopProjects\mysql-queries-sp-generator\trunk\MySQL SP Query Generator\obj\x86\Debug\MySQL_SP_Query_Generator.Properties.Resources.resources
 D:\Irfan\DesktopProjects\mysql-queries-sp-generator\trunk\MySQL SP Query Generator\obj\x86\Debug\GenerateResource.read.1.tlog
 D:\Irfan\DesktopProjects\mysql-queries-sp-generator\trunk\MySQL SP Query Generator\obj\x86\Debug\GenerateResource.write.1.tlog
+D:\Irfan\DesktopProjects\mysql-queries-sp-generator\trunk\MySQL SP Query Generator\obj\x86\Debug\MySQL_SP_Query_Generator.AboutBox.resources
