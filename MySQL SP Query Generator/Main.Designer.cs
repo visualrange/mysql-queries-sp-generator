@@ -43,12 +43,15 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clbTables = new System.Windows.Forms.CheckedListBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.gbSelectTables = new System.Windows.Forms.GroupBox();
+            this.gbOptions = new System.Windows.Forms.GroupBox();
             this.btnGenerate = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.panelCreateAlter = new System.Windows.Forms.Panel();
+            this.rbDrop = new System.Windows.Forms.RadioButton();
             this.rbAlter = new System.Windows.Forms.RadioButton();
             this.rbCreate = new System.Windows.Forms.RadioButton();
             this.cbxDelete = new System.Windows.Forms.CheckBox();
@@ -57,15 +60,16 @@
             this.cbxSelect = new System.Windows.Forms.CheckBox();
             this.rbStoredProc = new System.Windows.Forms.RadioButton();
             this.rbInline = new System.Windows.Forms.RadioButton();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.gbResult = new System.Windows.Forms.GroupBox();
             this.txtResult = new System.Windows.Forms.TextBox();
             this.btnSelectAll = new System.Windows.Forms.Button();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.groupBox1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            this.panel1.SuspendLayout();
-            this.groupBox4.SuspendLayout();
+            this.gbSelectTables.SuspendLayout();
+            this.gbOptions.SuspendLayout();
+            this.panelCreateAlter.SuspendLayout();
+            this.gbResult.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -196,7 +200,8 @@
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.saveAsToolStripMenuItem});
+            this.saveAsToolStripMenuItem,
+            this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(40, 22);
             this.fileToolStripMenuItem.Text = "File";
@@ -204,52 +209,72 @@
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.saveAsToolStripMenuItem.Text = "Save As";
+            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
+            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aboutToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(48, 22);
             this.helpToolStripMenuItem.Text = "Help";
             // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
+            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            // 
             // clbTables
             // 
             this.clbTables.CheckOnClick = true;
-            this.clbTables.Dock = System.Windows.Forms.DockStyle.Fill;
             this.clbTables.FormattingEnabled = true;
-            this.clbTables.Location = new System.Drawing.Point(3, 18);
+            this.clbTables.Location = new System.Drawing.Point(3, 52);
             this.clbTables.Name = "clbTables";
             this.clbTables.ScrollAlwaysVisible = true;
-            this.clbTables.Size = new System.Drawing.Size(161, 396);
+            this.clbTables.Size = new System.Drawing.Size(161, 395);
             this.clbTables.TabIndex = 2;
             // 
-            // groupBox2
+            // gbSelectTables
             // 
-            this.groupBox2.Controls.Add(this.clbTables);
-            this.groupBox2.Location = new System.Drawing.Point(12, 131);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(167, 417);
-            this.groupBox2.TabIndex = 3;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Select Tables";
+            this.gbSelectTables.Controls.Add(this.btnSelectAll);
+            this.gbSelectTables.Controls.Add(this.clbTables);
+            this.gbSelectTables.Enabled = false;
+            this.gbSelectTables.Location = new System.Drawing.Point(12, 87);
+            this.gbSelectTables.Name = "gbSelectTables";
+            this.gbSelectTables.Size = new System.Drawing.Size(167, 455);
+            this.gbSelectTables.TabIndex = 3;
+            this.gbSelectTables.TabStop = false;
+            this.gbSelectTables.Text = "Select Tables";
             // 
-            // groupBox3
+            // gbOptions
             // 
-            this.groupBox3.Controls.Add(this.btnGenerate);
-            this.groupBox3.Controls.Add(this.panel1);
-            this.groupBox3.Controls.Add(this.cbxDelete);
-            this.groupBox3.Controls.Add(this.cbxUpdate);
-            this.groupBox3.Controls.Add(this.cbxInsert);
-            this.groupBox3.Controls.Add(this.cbxSelect);
-            this.groupBox3.Controls.Add(this.rbStoredProc);
-            this.groupBox3.Controls.Add(this.rbInline);
-            this.groupBox3.Location = new System.Drawing.Point(188, 87);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(689, 75);
-            this.groupBox3.TabIndex = 4;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Options";
+            this.gbOptions.Controls.Add(this.rbDrop);
+            this.gbOptions.Controls.Add(this.btnGenerate);
+            this.gbOptions.Controls.Add(this.panelCreateAlter);
+            this.gbOptions.Controls.Add(this.cbxDelete);
+            this.gbOptions.Controls.Add(this.cbxUpdate);
+            this.gbOptions.Controls.Add(this.cbxInsert);
+            this.gbOptions.Controls.Add(this.cbxSelect);
+            this.gbOptions.Controls.Add(this.rbStoredProc);
+            this.gbOptions.Controls.Add(this.rbInline);
+            this.gbOptions.Enabled = false;
+            this.gbOptions.Location = new System.Drawing.Point(188, 87);
+            this.gbOptions.Name = "gbOptions";
+            this.gbOptions.Size = new System.Drawing.Size(689, 75);
+            this.gbOptions.TabIndex = 4;
+            this.gbOptions.TabStop = false;
+            this.gbOptions.Text = "Options";
             // 
             // btnGenerate
             // 
@@ -261,19 +286,31 @@
             this.btnGenerate.UseVisualStyleBackColor = true;
             this.btnGenerate.Click += new System.EventHandler(this.btnGenerate_Click);
             // 
-            // panel1
+            // panelCreateAlter
             // 
-            this.panel1.Controls.Add(this.rbAlter);
-            this.panel1.Controls.Add(this.rbCreate);
-            this.panel1.Location = new System.Drawing.Point(19, 41);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(257, 30);
-            this.panel1.TabIndex = 6;
+            this.panelCreateAlter.Controls.Add(this.rbAlter);
+            this.panelCreateAlter.Controls.Add(this.rbCreate);
+            this.panelCreateAlter.Enabled = false;
+            this.panelCreateAlter.Location = new System.Drawing.Point(290, 10);
+            this.panelCreateAlter.Name = "panelCreateAlter";
+            this.panelCreateAlter.Size = new System.Drawing.Size(107, 60);
+            this.panelCreateAlter.TabIndex = 6;
+            // 
+            // rbDrop
+            // 
+            this.rbDrop.AutoSize = true;
+            this.rbDrop.Location = new System.Drawing.Point(165, 14);
+            this.rbDrop.Name = "rbDrop";
+            this.rbDrop.Size = new System.Drawing.Size(92, 21);
+            this.rbDrop.TabIndex = 2;
+            this.rbDrop.TabStop = true;
+            this.rbDrop.Text = "Drop SP\'s";
+            this.rbDrop.UseVisualStyleBackColor = true;
             // 
             // rbAlter
             // 
             this.rbAlter.AutoSize = true;
-            this.rbAlter.Location = new System.Drawing.Point(116, 6);
+            this.rbAlter.Location = new System.Drawing.Point(5, 28);
             this.rbAlter.Name = "rbAlter";
             this.rbAlter.Size = new System.Drawing.Size(58, 21);
             this.rbAlter.TabIndex = 1;
@@ -284,7 +321,7 @@
             // rbCreate
             // 
             this.rbCreate.AutoSize = true;
-            this.rbCreate.Location = new System.Drawing.Point(4, 6);
+            this.rbCreate.Location = new System.Drawing.Point(5, 6);
             this.rbCreate.Name = "rbCreate";
             this.rbCreate.Size = new System.Drawing.Size(71, 21);
             this.rbCreate.TabIndex = 0;
@@ -335,13 +372,14 @@
             // rbStoredProc
             // 
             this.rbStoredProc.AutoSize = true;
-            this.rbStoredProc.Location = new System.Drawing.Point(135, 18);
+            this.rbStoredProc.Location = new System.Drawing.Point(24, 43);
             this.rbStoredProc.Name = "rbStoredProc";
             this.rbStoredProc.Size = new System.Drawing.Size(141, 21);
             this.rbStoredProc.TabIndex = 1;
             this.rbStoredProc.TabStop = true;
             this.rbStoredProc.Text = "Stored Procedure";
             this.rbStoredProc.UseVisualStyleBackColor = true;
+            this.rbStoredProc.CheckedChanged += new System.EventHandler(this.rbStoredProc_CheckedChanged);
             // 
             // rbInline
             // 
@@ -354,15 +392,16 @@
             this.rbInline.Text = "Inline Query";
             this.rbInline.UseVisualStyleBackColor = true;
             // 
-            // groupBox4
+            // gbResult
             // 
-            this.groupBox4.Controls.Add(this.txtResult);
-            this.groupBox4.Location = new System.Drawing.Point(188, 202);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(692, 343);
-            this.groupBox4.TabIndex = 5;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Result";
+            this.gbResult.Controls.Add(this.txtResult);
+            this.gbResult.Enabled = false;
+            this.gbResult.Location = new System.Drawing.Point(188, 168);
+            this.gbResult.Name = "gbResult";
+            this.gbResult.Size = new System.Drawing.Size(692, 377);
+            this.gbResult.TabIndex = 5;
+            this.gbResult.TabStop = false;
+            this.gbResult.Text = "Result";
             // 
             // txtResult
             // 
@@ -374,12 +413,12 @@
             this.txtResult.Name = "txtResult";
             this.txtResult.ReadOnly = true;
             this.txtResult.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtResult.Size = new System.Drawing.Size(686, 322);
+            this.txtResult.Size = new System.Drawing.Size(686, 356);
             this.txtResult.TabIndex = 0;
             // 
             // btnSelectAll
             // 
-            this.btnSelectAll.Location = new System.Drawing.Point(15, 102);
+            this.btnSelectAll.Location = new System.Drawing.Point(30, 21);
             this.btnSelectAll.Name = "btnSelectAll";
             this.btnSelectAll.Size = new System.Drawing.Size(105, 23);
             this.btnSelectAll.TabIndex = 6;
@@ -387,15 +426,18 @@
             this.btnSelectAll.UseVisualStyleBackColor = true;
             this.btnSelectAll.Click += new System.EventHandler(this.btnSelectAll_Click);
             // 
+            // saveFileDialog1
+            // 
+            this.saveFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog1_FileOk);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(892, 560);
-            this.Controls.Add(this.btnSelectAll);
-            this.Controls.Add(this.groupBox4);
-            this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.gbResult);
+            this.Controls.Add(this.gbOptions);
+            this.Controls.Add(this.gbSelectTables);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -407,13 +449,13 @@
             this.groupBox1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
+            this.gbSelectTables.ResumeLayout(false);
+            this.gbOptions.ResumeLayout(false);
+            this.gbOptions.PerformLayout();
+            this.panelCreateAlter.ResumeLayout(false);
+            this.panelCreateAlter.PerformLayout();
+            this.gbResult.ResumeLayout(false);
+            this.gbResult.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -437,8 +479,8 @@
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.Button btnConnect;
         private System.Windows.Forms.CheckedListBox clbTables;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox gbSelectTables;
+        private System.Windows.Forms.GroupBox gbOptions;
         private System.Windows.Forms.RadioButton rbStoredProc;
         private System.Windows.Forms.RadioButton rbInline;
         private System.Windows.Forms.CheckBox cbxDelete;
@@ -447,12 +489,16 @@
         private System.Windows.Forms.CheckBox cbxSelect;
         private System.Windows.Forms.Button btnGenerate;
         private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
-        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.GroupBox gbResult;
         private System.Windows.Forms.TextBox txtResult;
         private System.Windows.Forms.Button btnSelectAll;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panelCreateAlter;
         private System.Windows.Forms.RadioButton rbAlter;
         private System.Windows.Forms.RadioButton rbCreate;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.RadioButton rbDrop;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }
 

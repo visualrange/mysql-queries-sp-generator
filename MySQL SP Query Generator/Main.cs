@@ -29,7 +29,14 @@ namespace MySQL_SP_Query_Generator
             try
             {
                 conn.Open();
-                this.BindTables();
+                if (conn.State == ConnectionState.Open)
+                {
+                    gbSelectTables.Enabled = true;
+                    gbOptions.Enabled = true;
+                    gbResult.Enabled = true;
+                    this.BindTables();    
+                }
+                
             }
             catch (Exception ex)
             {
@@ -115,6 +122,8 @@ namespace MySQL_SP_Query_Generator
         private void btnGenerate_Click(object sender, EventArgs e)
         {
             txtResult.Text = "";
+            txtResult.AppendText(string.Format(" USE {0};", database));
+            txtResult.AppendText(Environment.NewLine);
 
             if (rbInline.Checked == true)
             {
@@ -122,9 +131,11 @@ namespace MySQL_SP_Query_Generator
             }
             else if (rbStoredProc.Checked == true)
             {
-                txtResult.AppendText(string.Format(" USE {0};", database));
-                txtResult.AppendText(Environment.NewLine);
                 this.GenerateStoredProcedure();
+            }
+            else if (rbDrop.Checked == true)
+            {
+                this.GenerateSPDropStatements();
             }
         }
 
@@ -204,10 +215,11 @@ namespace MySQL_SP_Query_Generator
             for (int a = 0; a < rows.Length; a++)
             {
                 StringBuilder sb = new StringBuilder();
+                string fieldName = rows[a]["Field"].ToString().ToLower();
                 sb.AppendLine(" DELIMITER ; ");
-                sb.AppendLine(string.Format("DROP procedure IF EXISTS `{0}_get_by_{1}`;", tableName, rows[a]["Field"].ToString()));
+                sb.AppendLine(string.Format("DROP procedure IF EXISTS `{0}_get_by_{1}`;", tableName, fieldName));
                 sb.AppendLine(" DELIMITER $$ ");
-                sb.AppendLine(string.Format(" {0} PROCEDURE `{1}`.`{2}_get_by_{3}`() ", mode, database, tableName,rows[a]["Field"].ToString()));
+                sb.AppendLine(string.Format(" {0} PROCEDURE `{1}`.`{2}_get_by_{3}`() ", mode, database, tableName, fieldName));
                 sb.AppendLine(" BEGIN ");
                 sb.AppendLine(" SELECT ");
                 string columns = string.Empty;
@@ -307,11 +319,12 @@ namespace MySQL_SP_Query_Generator
             {
 
                 string columns = string.Empty;
+                string fieldName = rows[a]["Field"].ToString().ToLower();
                 StringBuilder sb = new StringBuilder();
                 sb.AppendLine(" DELIMITER ; ");
-                sb.AppendLine(string.Format("DROP procedure IF EXISTS `{0}_update_by_{1}`;", tableName,rows[a]["Field"].ToString()));
+                sb.AppendLine(string.Format("DROP procedure IF EXISTS `{0}_update_by_{1}`;", tableName, fieldName));
                 sb.AppendLine(" DELIMITER $$ ");
-                sb.AppendLine(string.Format(" {0} PROCEDURE `{1}`.`{2}_update_by_{3}`( ", mode, database, tableName, rows[a]["Field"].ToString()));
+                sb.AppendLine(string.Format(" {0} PROCEDURE `{1}`.`{2}_update_by_{3}`( ", mode, database, tableName, fieldName));
 
                 for (int i = 0; i < tableInfo.Rows.Count; i++)
                 {
@@ -335,15 +348,15 @@ namespace MySQL_SP_Query_Generator
                 {
                     if (i == (tableInfo.Rows.Count - 1))
                     {
-                        columns += "`" + tableInfo.Rows[i]["Field"].ToString() + "` = " + tableInfo.Rows[i]["Field"].ToString();
+                        columns += "`" + tableInfo.Rows[i]["Field"].ToString() + "` = " + fieldName;
                         continue;
                     }
 
-                    columns += " `" + tableInfo.Rows[i]["Field"].ToString() + "` = " + tableInfo.Rows[i]["Field"].ToString() + ", ";
+                    columns += " `" + tableInfo.Rows[i]["Field"].ToString() + "` = " + fieldName + ", ";
                 }
 
                 sb.AppendLine(columns);
-                sb.AppendLine(string.Format(" WHERE `{0}` = {1} ;", rows[a]["Field"].ToString(), rows[a]["Field"].ToString()));
+                sb.AppendLine(string.Format(" WHERE `{0}` = {1} ;", fieldName, fieldName));
                 sb.AppendLine(" END $$ ");
                 sb.AppendLine(Environment.NewLine);
 
@@ -357,16 +370,86 @@ namespace MySQL_SP_Query_Generator
 
             for (int a = 0; a < rows.Length; a++)
             {
+                string fieldName = rows[a]["Field"].ToString().ToLower();
                 StringBuilder sb = new StringBuilder();
                 sb.AppendLine(" DELIMITER ; ");
-                sb.AppendLine(string.Format(" DROP procedure IF EXISTS `{0}_delete_by_{1}`; ", tableName,rows[a]["Field"].ToString()));
+                sb.AppendLine(string.Format(" DROP procedure IF EXISTS `{0}_delete_by_{1}`; ", tableName, fieldName));
                 sb.AppendLine(" DELIMITER $$ ");
-                sb.AppendLine(string.Format(" {0} PROCEDURE `{1}`.`{2}_delete_by_{3}`() ", mode, database, tableName, rows[a]["Field"].ToString()));
+                sb.AppendLine(string.Format(" {0} PROCEDURE `{1}`.`{2}_delete_by_{3}`() ", mode, database, tableName, fieldName));
                 sb.AppendLine(" BEGIN ");
-                sb.AppendLine(string.Format(" DELETE FROM {0} WHERE `{0}` = {1} ;", tableName, rows[a]["Field"].ToString(), rows[a]["Field"].ToString()));
+                sb.AppendLine(string.Format(" DELETE FROM {0} WHERE `{0}` = {1} ;", tableName, fieldName, fieldName));
                 sb.AppendLine(" END $$ ");
                 txtResult.AppendText(sb.ToString());
             }
         }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AboutBox about = new AboutBox();
+            about.Show();
+            about.Focus();
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void GenerateSPDropStatements()
+        {
+            conn = this.GetConnection();
+            DataTable dtInfo = new DataTable();
+            string query = string.Format("select ROUTINE_NAME FROM INFORMATION_SCHEMA.ROUTINES WHERE ROUTINE_TYPE=\"PROCEDURE\" AND ROUTINE_SCHEMA=\"{0}\"; ", database);
+            MySqlCommand cmd = new MySqlCommand(query, conn);
+            MySqlDataAdapter adapter = new MySqlDataAdapter();
+
+            try
+            {
+                adapter.SelectCommand = cmd;
+                adapter.Fill(dtInfo);
+                
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < dtInfo.Rows.Count; i++)
+                {
+                    sb.AppendLine(string.Format("drop procedure `{0}`.`{1}`;",database,dtInfo.Rows[i][0].ToString()));    
+                }
+
+                txtResult.AppendText(sb.ToString());
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + Environment.NewLine + ex.StackTrace);
+            }
+            
+        }
+
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            saveFileDialog1.Filter = "SQL File (*.sql)|*.sql|Text File (*.txt)|*.txt";
+            saveFileDialog1.FilterIndex = 0;
+
+            saveFileDialog1.ShowDialog();
+        }
+
+        private void saveFileDialog1_FileOk(object sender, CancelEventArgs e)
+        {
+            string fileName = saveFileDialog1.FileName;
+            System.IO.File.WriteAllText(fileName,txtResult.Text);
+        }
+
+        private void rbStoredProc_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rbStoredProc.Checked == true)
+            {
+                panelCreateAlter.Enabled = true;
+            }
+            else
+            {
+                panelCreateAlter.Enabled = false;
+            }
+        }
+
+
     }
 }
