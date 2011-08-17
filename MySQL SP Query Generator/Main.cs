@@ -22,33 +22,7 @@ namespace MySQL_SP_Query_Generator
             InitializeComponent();
         }
 
-        private void btnConnect_Click(object sender, EventArgs e)
-        {
-            conn = GetConnection();
-
-            try
-            {
-                conn.Open();
-                if (conn.State == ConnectionState.Open)
-                {
-                    gbSelectTables.Enabled = true;
-                    gbOptions.Enabled = true;
-                    gbResult.Enabled = true;
-                    this.BindTables();    
-                }
-                
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message + Environment.NewLine + ex.StackTrace);
-            }
-            finally
-            {
-                conn.Close();
-                conn = null;
-            }
-        }
-
+        #region Helper Methods
         private MySqlConnection GetConnection()
         {
             server = txtServer.Text.Trim();
@@ -89,58 +63,179 @@ namespace MySQL_SP_Query_Generator
 
 
         }
+        #endregion
 
-        private void btnSelectAll_Click(object sender, EventArgs e)
-        {
-            if (clbTables.Items.Count > 0)
-            {
-                if (btnSelectAll.Text.Equals("Select All"))
-                {
-                    for (int i = 0; i < clbTables.Items.Count; i++)
-                    {
-                        clbTables.SetItemChecked(i, true);
-                    }
-
-                    btnSelectAll.Text = "Un-Select All";
-                    return;
-                }
-
-                if (btnSelectAll.Text.Equals("Un-Select All"))
-                {
-                    for (int i = 0; i < clbTables.Items.Count; i++)
-                    {
-                        clbTables.SetItemChecked(i, false);
-                    }
-
-                    btnSelectAll.Text = "Select All";
-                    return;
-                }
-            }
-
-        }
-
-        private void btnGenerate_Click(object sender, EventArgs e)
-        {
-            txtResult.Text = "";
-            txtResult.AppendText(string.Format(" USE {0};", database));
-            txtResult.AppendText(Environment.NewLine);
-
-            if (rbInline.Checked == true)
-            {
-                this.GenerateInlineQuery();
-            }
-            else if (rbStoredProc.Checked == true)
-            {
-                this.GenerateStoredProcedure();
-            }
-            else if (rbDrop.Checked == true)
-            {
-                this.GenerateSPDropStatements();
-            }
-        }
-
+        #region For Inline Query
         private void GenerateInlineQuery()
-        { }
+        {
+            conn = this.GetConnection();
+
+            for (int i = 0; i < clbTables.CheckedItems.Count; i++)
+            {
+                string tableName = clbTables.CheckedItems[i].ToString();
+                try
+                {
+                    if (conn.State == ConnectionState.Closed)
+                    {
+                        conn.Open();
+                    }
+
+                    DataTable dtInfo = new DataTable();
+                    string query = string.Format("explain {0}", tableName);
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    MySqlDataAdapter adapter = new MySqlDataAdapter();
+                    adapter.SelectCommand = cmd;
+                    adapter.Fill(dtInfo);
+
+                    if (cbxSelect.Checked == true)
+                    {
+                        this.GenerateSelectQuery(tableName, dtInfo);
+                    }
+
+                    if (cbxInsert.Checked == true)
+                    {
+                        this.GenerateInsertQuery(tableName, dtInfo);
+                    }
+
+                    if (cbxUpdate.Checked == true)
+                    {
+                        this.GenerateUpdateQuery(tableName, dtInfo);
+                    }
+
+                    if (cbxDelete.Checked == true)
+                    {
+                        this.GenerateDeleteQuery(tableName, dtInfo);
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message + Environment.NewLine + ex.StackTrace);
+                }
+                finally
+                {
+                    conn.Close();
+                }
+            }
+        }
+
+        private void GenerateSelectQuery(string tableName, DataTable tableInfo)
+        {
+            DataRow[] rows = tableInfo.Select(" Key <>'' ");
+
+            for (int a = 0; a < rows.Length; a++)
+            {
+                StringBuilder sb = new StringBuilder();
+                string fieldName = rows[a]["Field"].ToString().ToLower();
+                sb.AppendLine(" SELECT ");
+                string columns = string.Empty;
+
+                for (int i = 0; i < tableInfo.Rows.Count; i++)
+                {
+                    if (i == (tableInfo.Rows.Count - 1))
+                    {
+                        columns += tableInfo.Rows[i]["Field"].ToString();
+                        continue;
+                    }
+
+                    columns += tableInfo.Rows[i]["Field"].ToString() + ", ";
+                }
+
+                sb.AppendLine(columns);
+                sb.AppendLine(string.Format(" From {0}  ", tableName));
+                sb.AppendLine(string.Format(" WHERE {0} = {1}; ", fieldName, fieldName));
+                sb.AppendLine(Environment.NewLine);
+
+                txtResult.AppendText(sb.ToString());
+            }
+
+        }
+
+        private void GenerateInsertQuery(string tableName, DataTable tableInfo)
+        {
+            string columns = string.Empty;
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(string.Format(" INSERT INTO {0}( ", tableName));
+            columns = string.Empty;
+            for (int i = 0; i < tableInfo.Rows.Count; i++)
+            {
+                if (i == (tableInfo.Rows.Count - 1))
+                {
+                    columns += tableInfo.Rows[i]["Field"].ToString() + ")";
+                    continue;
+                }
+
+                columns += tableInfo.Rows[i]["Field"].ToString() + ", ";
+            }
+
+            sb.AppendLine(columns);
+
+            columns = string.Empty;
+            sb.AppendLine(" values(");
+            for (int y = 0; y < tableInfo.Rows.Count; y++)
+            {
+                if (y == (tableInfo.Rows.Count - 1))
+                {
+                    columns += tableInfo.Rows[y]["Field"].ToString() + ");";
+                    continue;
+                }
+
+                columns += tableInfo.Rows[y]["Field"].ToString() + ", ";
+            }
+
+            sb.AppendLine(columns);
+            sb.AppendLine(Environment.NewLine);
+            txtResult.AppendText(sb.ToString());
+        }
+
+        private void GenerateUpdateQuery(string tableName, DataTable tableInfo)
+        {
+
+            DataRow[] rows = tableInfo.Select(" Key <>'' ");
+
+            for (int a = 0; a < rows.Length; a++)
+            {
+
+                string columns = string.Empty;
+                string fieldName = rows[a]["Field"].ToString().ToLower();
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine(string.Format(" UPDATE {0} SET ", tableName));
+
+                columns = string.Empty;
+                for (int i = 0; i < tableInfo.Rows.Count; i++)
+                {
+                    if (i == (tableInfo.Rows.Count - 1))
+                    {
+                        columns += tableInfo.Rows[i]["Field"].ToString() + " = $" + tableInfo.Rows[i]["Field"].ToString();
+                        continue;
+                    }
+
+                    columns += tableInfo.Rows[i]["Field"].ToString() + " = $" + tableInfo.Rows[i]["Field"].ToString() + ", ";
+                }
+
+                sb.AppendLine(columns);
+                sb.AppendLine(string.Format(" WHERE {0} = ${1} ;", fieldName, fieldName));
+                sb.AppendLine(Environment.NewLine);
+                txtResult.AppendText(sb.ToString());
+            }
+        }
+
+        private void GenerateDeleteQuery(string tableName, DataTable tableInfo)
+        {
+            DataRow[] rows = tableInfo.Select(" Key <>'' ");
+
+            for (int a = 0; a < rows.Length; a++)
+            {
+                string fieldName = rows[a]["Field"].ToString().ToLower();
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine(string.Format(" DELETE FROM {0} WHERE {1} = {2} ;", tableName, fieldName, fieldName));
+                sb.AppendLine(Environment.NewLine);
+                txtResult.AppendText(sb.ToString());
+            }
+        }
+        #endregion
+
+        #region For Stored Procedure
 
         private void GenerateStoredProcedure()
         {
@@ -166,12 +261,12 @@ namespace MySQL_SP_Query_Generator
                     string mode = string.Empty;
                     if (rbCreate.Checked == true)
                     {
-                        mode = "CREATE";
+                        mode = " CREATE ";
                     }
 
                     if (rbAlter.Checked == true)
                     {
-                        mode = string.Format("CREATE DEFINER=`{0}`@`{1}`", userId, server);
+                        mode = string.Format(" CREATE DEFINER=`{0}`@`{1}` ", userId, server);
                     }
 
                     if (cbxSelect.Checked == true)
@@ -238,8 +333,8 @@ namespace MySQL_SP_Query_Generator
                 }
 
                 sb.AppendLine(columns);
-
-                sb.AppendLine(string.Format(" From {0} ; ", tableName));
+                sb.AppendLine(string.Format(" From {0}  ", tableName));
+                sb.AppendLine(string.Format(" WHERE {0} = {1}; ", fieldName, fieldName));
                 sb.AppendLine(" END $$ ");
                 sb.AppendLine(Environment.NewLine);
 
@@ -348,11 +443,11 @@ namespace MySQL_SP_Query_Generator
                 {
                     if (i == (tableInfo.Rows.Count - 1))
                     {
-                        columns += "`" + tableInfo.Rows[i]["Field"].ToString() + "` = " + fieldName;
+                        columns += "`" + tableInfo.Rows[i]["Field"].ToString() + "` = " + tableInfo.Rows[i]["Field"].ToString();
                         continue;
                     }
 
-                    columns += " `" + tableInfo.Rows[i]["Field"].ToString() + "` = " + fieldName + ", ";
+                    columns += " `" + tableInfo.Rows[i]["Field"].ToString() + "` = " + tableInfo.Rows[i]["Field"].ToString() + ", ";
                 }
 
                 sb.AppendLine(columns);
@@ -377,9 +472,104 @@ namespace MySQL_SP_Query_Generator
                 sb.AppendLine(" DELIMITER $$ ");
                 sb.AppendLine(string.Format(" {0} PROCEDURE `{1}`.`{2}_delete_by_{3}`() ", mode, database, tableName, fieldName));
                 sb.AppendLine(" BEGIN ");
-                sb.AppendLine(string.Format(" DELETE FROM {0} WHERE `{0}` = {1} ;", tableName, fieldName, fieldName));
+                sb.AppendLine(string.Format(" DELETE FROM {0} WHERE `{1}` = {2} ;", tableName, fieldName, fieldName));
                 sb.AppendLine(" END $$ ");
+                sb.AppendLine(Environment.NewLine);
                 txtResult.AppendText(sb.ToString());
+            }
+        }
+
+        private void GenerateSPDropStatements()
+        {
+            conn = this.GetConnection();
+            DataTable dtInfo = new DataTable();
+            string query = string.Format("select ROUTINE_NAME FROM INFORMATION_SCHEMA.ROUTINES WHERE ROUTINE_TYPE=\"PROCEDURE\" AND ROUTINE_SCHEMA=\"{0}\"; ", database);
+            MySqlCommand cmd = new MySqlCommand(query, conn);
+            MySqlDataAdapter adapter = new MySqlDataAdapter();
+
+            try
+            {
+                adapter.SelectCommand = cmd;
+                adapter.Fill(dtInfo);
+
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < dtInfo.Rows.Count; i++)
+                {
+                    sb.AppendLine(string.Format("drop procedure `{0}`.`{1}`;", database, dtInfo.Rows[i][0].ToString()));
+                }
+
+                txtResult.AppendText(sb.ToString());
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + Environment.NewLine + ex.StackTrace);
+            }
+
+        }
+
+        private void rbStoredProc_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rbStoredProc.Checked == true)
+            {
+                panelCreateAlter.Enabled = true;
+                rbCreate.Checked = true;
+            }
+            else
+            {
+                panelCreateAlter.Enabled = false;
+            }
+        }
+
+        #endregion
+
+        #region Events
+        private void btnSelectAll_Click(object sender, EventArgs e)
+        {
+            if (clbTables.Items.Count > 0)
+            {
+                if (btnSelectAll.Text.Equals("Select All"))
+                {
+                    for (int i = 0; i < clbTables.Items.Count; i++)
+                    {
+                        clbTables.SetItemChecked(i, true);
+                    }
+
+                    btnSelectAll.Text = "Un-Select All";
+                    return;
+                }
+
+                if (btnSelectAll.Text.Equals("Un-Select All"))
+                {
+                    for (int i = 0; i < clbTables.Items.Count; i++)
+                    {
+                        clbTables.SetItemChecked(i, false);
+                    }
+
+                    btnSelectAll.Text = "Select All";
+                    return;
+                }
+            }
+
+        }
+
+        private void btnGenerate_Click(object sender, EventArgs e)
+        {
+            txtResult.Text = "";
+            txtResult.AppendText(string.Format(" USE {0};", database));
+            txtResult.AppendText(Environment.NewLine);
+
+            if (rbInline.Checked == true)
+            {
+                this.GenerateInlineQuery();
+            }
+            else if (rbStoredProc.Checked == true)
+            {
+                this.GenerateStoredProcedure();
+            }
+            else if (rbDrop.Checked == true)
+            {
+                this.GenerateSPDropStatements();
             }
         }
 
@@ -395,35 +585,6 @@ namespace MySQL_SP_Query_Generator
             Application.Exit();
         }
 
-        private void GenerateSPDropStatements()
-        {
-            conn = this.GetConnection();
-            DataTable dtInfo = new DataTable();
-            string query = string.Format("select ROUTINE_NAME FROM INFORMATION_SCHEMA.ROUTINES WHERE ROUTINE_TYPE=\"PROCEDURE\" AND ROUTINE_SCHEMA=\"{0}\"; ", database);
-            MySqlCommand cmd = new MySqlCommand(query, conn);
-            MySqlDataAdapter adapter = new MySqlDataAdapter();
-
-            try
-            {
-                adapter.SelectCommand = cmd;
-                adapter.Fill(dtInfo);
-                
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < dtInfo.Rows.Count; i++)
-                {
-                    sb.AppendLine(string.Format("drop procedure `{0}`.`{1}`;",database,dtInfo.Rows[i][0].ToString()));    
-                }
-
-                txtResult.AppendText(sb.ToString());
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message + Environment.NewLine + ex.StackTrace);
-            }
-            
-        }
-
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             saveFileDialog1.Filter = "SQL File (*.sql)|*.sql|Text File (*.txt)|*.txt";
@@ -435,21 +596,37 @@ namespace MySQL_SP_Query_Generator
         private void saveFileDialog1_FileOk(object sender, CancelEventArgs e)
         {
             string fileName = saveFileDialog1.FileName;
-            System.IO.File.WriteAllText(fileName,txtResult.Text);
+            System.IO.File.WriteAllText(fileName, txtResult.Text);
         }
 
-        private void rbStoredProc_CheckedChanged(object sender, EventArgs e)
+        private void btnConnect_Click(object sender, EventArgs e)
         {
-            if (rbStoredProc.Checked == true)
+            conn = GetConnection();
+
+            try
             {
-                panelCreateAlter.Enabled = true;
+                conn.Open();
+                if (conn.State == ConnectionState.Open)
+                {
+                    gbSelectTables.Enabled = true;
+                    gbOptions.Enabled = true;
+                    gbResult.Enabled = true;
+                    this.BindTables();
+                }
+
             }
-            else
+            catch (Exception ex)
             {
-                panelCreateAlter.Enabled = false;
+                MessageBox.Show(ex.Message + Environment.NewLine + ex.StackTrace);
+            }
+            finally
+            {
+                conn.Close();
+                conn = null;
             }
         }
 
+        #endregion
 
     }
 }
