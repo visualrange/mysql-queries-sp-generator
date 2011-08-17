@@ -48,10 +48,11 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clbTables = new System.Windows.Forms.CheckedListBox();
             this.gbSelectTables = new System.Windows.Forms.GroupBox();
+            this.btnSelectAll = new System.Windows.Forms.Button();
             this.gbOptions = new System.Windows.Forms.GroupBox();
+            this.rbDrop = new System.Windows.Forms.RadioButton();
             this.btnGenerate = new System.Windows.Forms.Button();
             this.panelCreateAlter = new System.Windows.Forms.Panel();
-            this.rbDrop = new System.Windows.Forms.RadioButton();
             this.rbAlter = new System.Windows.Forms.RadioButton();
             this.rbCreate = new System.Windows.Forms.RadioButton();
             this.cbxDelete = new System.Windows.Forms.CheckBox();
@@ -62,7 +63,6 @@
             this.rbInline = new System.Windows.Forms.RadioButton();
             this.gbResult = new System.Windows.Forms.GroupBox();
             this.txtResult = new System.Windows.Forms.TextBox();
-            this.btnSelectAll = new System.Windows.Forms.Button();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.groupBox1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -209,14 +209,14 @@
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.saveAsToolStripMenuItem.Text = "Save As";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -257,6 +257,16 @@
             this.gbSelectTables.TabStop = false;
             this.gbSelectTables.Text = "Select Tables";
             // 
+            // btnSelectAll
+            // 
+            this.btnSelectAll.Location = new System.Drawing.Point(30, 21);
+            this.btnSelectAll.Name = "btnSelectAll";
+            this.btnSelectAll.Size = new System.Drawing.Size(105, 23);
+            this.btnSelectAll.TabIndex = 6;
+            this.btnSelectAll.Text = "Select All";
+            this.btnSelectAll.UseVisualStyleBackColor = true;
+            this.btnSelectAll.Click += new System.EventHandler(this.btnSelectAll_Click);
+            // 
             // gbOptions
             // 
             this.gbOptions.Controls.Add(this.rbDrop);
@@ -275,6 +285,17 @@
             this.gbOptions.TabIndex = 4;
             this.gbOptions.TabStop = false;
             this.gbOptions.Text = "Options";
+            // 
+            // rbDrop
+            // 
+            this.rbDrop.AutoSize = true;
+            this.rbDrop.Location = new System.Drawing.Point(165, 14);
+            this.rbDrop.Name = "rbDrop";
+            this.rbDrop.Size = new System.Drawing.Size(111, 21);
+            this.rbDrop.TabIndex = 2;
+            this.rbDrop.TabStop = true;
+            this.rbDrop.Text = "Drop All SP\'s";
+            this.rbDrop.UseVisualStyleBackColor = true;
             // 
             // btnGenerate
             // 
@@ -295,17 +316,6 @@
             this.panelCreateAlter.Name = "panelCreateAlter";
             this.panelCreateAlter.Size = new System.Drawing.Size(107, 60);
             this.panelCreateAlter.TabIndex = 6;
-            // 
-            // rbDrop
-            // 
-            this.rbDrop.AutoSize = true;
-            this.rbDrop.Location = new System.Drawing.Point(165, 14);
-            this.rbDrop.Name = "rbDrop";
-            this.rbDrop.Size = new System.Drawing.Size(92, 21);
-            this.rbDrop.TabIndex = 2;
-            this.rbDrop.TabStop = true;
-            this.rbDrop.Text = "Drop SP\'s";
-            this.rbDrop.UseVisualStyleBackColor = true;
             // 
             // rbAlter
             // 
@@ -415,16 +425,6 @@
             this.txtResult.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.txtResult.Size = new System.Drawing.Size(686, 356);
             this.txtResult.TabIndex = 0;
-            // 
-            // btnSelectAll
-            // 
-            this.btnSelectAll.Location = new System.Drawing.Point(30, 21);
-            this.btnSelectAll.Name = "btnSelectAll";
-            this.btnSelectAll.Size = new System.Drawing.Size(105, 23);
-            this.btnSelectAll.TabIndex = 6;
-            this.btnSelectAll.Text = "Select All";
-            this.btnSelectAll.UseVisualStyleBackColor = true;
-            this.btnSelectAll.Click += new System.EventHandler(this.btnSelectAll_Click);
             // 
             // saveFileDialog1
             // 
