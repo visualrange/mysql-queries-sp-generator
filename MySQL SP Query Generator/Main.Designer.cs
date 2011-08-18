@@ -50,6 +50,10 @@
             this.gbSelectTables = new System.Windows.Forms.GroupBox();
             this.btnSelectAll = new System.Windows.Forms.Button();
             this.gbOptions = new System.Windows.Forms.GroupBox();
+            this.cbxCount = new System.Windows.Forms.CheckBox();
+            this.cbxDeleteFKUN = new System.Windows.Forms.CheckBox();
+            this.cbxUpdateFKUN = new System.Windows.Forms.CheckBox();
+            this.cbxSelectFKUN = new System.Windows.Forms.CheckBox();
             this.rbDrop = new System.Windows.Forms.RadioButton();
             this.btnGenerate = new System.Windows.Forms.Button();
             this.panelCreateAlter = new System.Windows.Forms.Panel();
@@ -64,10 +68,6 @@
             this.gbResult = new System.Windows.Forms.GroupBox();
             this.txtResult = new System.Windows.Forms.TextBox();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.cbxSelectFKUN = new System.Windows.Forms.CheckBox();
-            this.cbxUpdateFKUN = new System.Windows.Forms.CheckBox();
-            this.cbxDeleteFKUN = new System.Windows.Forms.CheckBox();
-            this.cbxCount = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.gbSelectTables.SuspendLayout();
@@ -293,6 +293,46 @@
             this.gbOptions.TabStop = false;
             this.gbOptions.Text = "Options";
             // 
+            // cbxCount
+            // 
+            this.cbxCount.AutoSize = true;
+            this.cbxCount.Location = new System.Drawing.Point(508, 93);
+            this.cbxCount.Name = "cbxCount";
+            this.cbxCount.Size = new System.Drawing.Size(62, 21);
+            this.cbxCount.TabIndex = 10;
+            this.cbxCount.Text = "Total";
+            this.cbxCount.UseVisualStyleBackColor = true;
+            // 
+            // cbxDeleteFKUN
+            // 
+            this.cbxDeleteFKUN.AutoSize = true;
+            this.cbxDeleteFKUN.Location = new System.Drawing.Point(508, 65);
+            this.cbxDeleteFKUN.Name = "cbxDeleteFKUN";
+            this.cbxDeleteFKUN.Size = new System.Drawing.Size(141, 21);
+            this.cbxDeleteFKUN.TabIndex = 9;
+            this.cbxDeleteFKUN.Text = "Delete For FK/UN";
+            this.cbxDeleteFKUN.UseVisualStyleBackColor = true;
+            // 
+            // cbxUpdateFKUN
+            // 
+            this.cbxUpdateFKUN.AutoSize = true;
+            this.cbxUpdateFKUN.Location = new System.Drawing.Point(508, 39);
+            this.cbxUpdateFKUN.Name = "cbxUpdateFKUN";
+            this.cbxUpdateFKUN.Size = new System.Drawing.Size(146, 21);
+            this.cbxUpdateFKUN.TabIndex = 8;
+            this.cbxUpdateFKUN.Text = "Update For FK/UN";
+            this.cbxUpdateFKUN.UseVisualStyleBackColor = true;
+            // 
+            // cbxSelectFKUN
+            // 
+            this.cbxSelectFKUN.AutoSize = true;
+            this.cbxSelectFKUN.Location = new System.Drawing.Point(508, 15);
+            this.cbxSelectFKUN.Name = "cbxSelectFKUN";
+            this.cbxSelectFKUN.Size = new System.Drawing.Size(139, 21);
+            this.cbxSelectFKUN.TabIndex = 7;
+            this.cbxSelectFKUN.Text = "Select For FK/UN";
+            this.cbxSelectFKUN.UseVisualStyleBackColor = true;
+            // 
             // rbDrop
             // 
             this.rbDrop.AutoSize = true;
@@ -437,46 +477,6 @@
             // 
             this.saveFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog1_FileOk);
             // 
-            // cbxSelectFKUN
-            // 
-            this.cbxSelectFKUN.AutoSize = true;
-            this.cbxSelectFKUN.Location = new System.Drawing.Point(508, 15);
-            this.cbxSelectFKUN.Name = "cbxSelectFKUN";
-            this.cbxSelectFKUN.Size = new System.Drawing.Size(139, 21);
-            this.cbxSelectFKUN.TabIndex = 7;
-            this.cbxSelectFKUN.Text = "Select For FK/UN";
-            this.cbxSelectFKUN.UseVisualStyleBackColor = true;
-            // 
-            // cbxUpdateFKUN
-            // 
-            this.cbxUpdateFKUN.AutoSize = true;
-            this.cbxUpdateFKUN.Location = new System.Drawing.Point(508, 39);
-            this.cbxUpdateFKUN.Name = "cbxUpdateFKUN";
-            this.cbxUpdateFKUN.Size = new System.Drawing.Size(146, 21);
-            this.cbxUpdateFKUN.TabIndex = 8;
-            this.cbxUpdateFKUN.Text = "Update For FK/UN";
-            this.cbxUpdateFKUN.UseVisualStyleBackColor = true;
-            // 
-            // cbxDeleteFKUN
-            // 
-            this.cbxDeleteFKUN.AutoSize = true;
-            this.cbxDeleteFKUN.Location = new System.Drawing.Point(508, 65);
-            this.cbxDeleteFKUN.Name = "cbxDeleteFKUN";
-            this.cbxDeleteFKUN.Size = new System.Drawing.Size(141, 21);
-            this.cbxDeleteFKUN.TabIndex = 9;
-            this.cbxDeleteFKUN.Text = "Delete For FK/UN";
-            this.cbxDeleteFKUN.UseVisualStyleBackColor = true;
-            // 
-            // cbxCount
-            // 
-            this.cbxCount.AutoSize = true;
-            this.cbxCount.Location = new System.Drawing.Point(508, 93);
-            this.cbxCount.Name = "cbxCount";
-            this.cbxCount.Size = new System.Drawing.Size(62, 21);
-            this.cbxCount.TabIndex = 10;
-            this.cbxCount.Text = "Total";
-            this.cbxCount.UseVisualStyleBackColor = true;
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -491,7 +491,7 @@
             this.MaximizeBox = false;
             this.Name = "Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "MySQL SP & Query Generator";
+            this.Text = "MySQL Inline Queries & SP Generator";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
