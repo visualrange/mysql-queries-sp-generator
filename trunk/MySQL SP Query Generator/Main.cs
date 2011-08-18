@@ -63,6 +63,28 @@ namespace MySQL_SP_Query_Generator
 
 
         }
+
+        private string getFilterExpression(CheckBox cbx, CheckBox cbxFKUN)
+        {
+            string filterExpression = string.Empty;
+
+            if (cbx.Checked)
+            {
+                filterExpression = " Key = 'PRI' ";
+            }
+
+            if (cbxFKUN.Checked)
+            {
+                filterExpression = " Key <> '' and key <> 'PRI' ";
+            }
+
+            if (cbx.Checked && cbxFKUN.Checked)
+            {
+                filterExpression = " Key <> '' ";
+            }
+
+            return filterExpression;
+        }
         #endregion
 
         #region For Inline Query
@@ -87,7 +109,7 @@ namespace MySQL_SP_Query_Generator
                     adapter.SelectCommand = cmd;
                     adapter.Fill(dtInfo);
 
-                    if (cbxSelect.Checked == true)
+                    if (cbxSelect.Checked || cbxSelectFKUN.Checked)
                     {
                         this.GenerateSelectQuery(tableName, dtInfo);
                     }
@@ -97,14 +119,19 @@ namespace MySQL_SP_Query_Generator
                         this.GenerateInsertQuery(tableName, dtInfo);
                     }
 
-                    if (cbxUpdate.Checked == true)
+                    if (cbxUpdate.Checked || cbxSelectFKUN.Checked)
                     {
                         this.GenerateUpdateQuery(tableName, dtInfo);
                     }
 
-                    if (cbxDelete.Checked == true)
+                    if (cbxDelete.Checked || cbxDeleteFKUN.Checked)
                     {
                         this.GenerateDeleteQuery(tableName, dtInfo);
+                    }
+
+                    if (cbxCount.Checked)
+                    {
+                        this.GenerateCountQuery(tableName);
                     }
 
                 }
@@ -121,7 +148,7 @@ namespace MySQL_SP_Query_Generator
 
         private void GenerateSelectQuery(string tableName, DataTable tableInfo)
         {
-            DataRow[] rows = tableInfo.Select(" Key <>'' ");
+            DataRow[] rows = tableInfo.Select(this.getFilterExpression(cbxSelect, cbxSelectFKUN));
 
             for (int a = 0; a < rows.Length; a++)
             {
@@ -191,7 +218,7 @@ namespace MySQL_SP_Query_Generator
         private void GenerateUpdateQuery(string tableName, DataTable tableInfo)
         {
 
-            DataRow[] rows = tableInfo.Select(" Key <>'' ");
+            DataRow[] rows = tableInfo.Select(this.getFilterExpression(cbxUpdate, cbxUpdateFKUN));
 
             for (int a = 0; a < rows.Length; a++)
             {
@@ -222,7 +249,7 @@ namespace MySQL_SP_Query_Generator
 
         private void GenerateDeleteQuery(string tableName, DataTable tableInfo)
         {
-            DataRow[] rows = tableInfo.Select(" Key <>'' ");
+            DataRow[] rows = tableInfo.Select(this.getFilterExpression(cbxDelete, cbxDeleteFKUN));
 
             for (int a = 0; a < rows.Length; a++)
             {
@@ -233,6 +260,15 @@ namespace MySQL_SP_Query_Generator
                 txtResult.AppendText(sb.ToString());
             }
         }
+
+        private void GenerateCountQuery(string tableName)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(Environment.NewLine);
+            sb.Append(string.Format(" Select COUNT(1) FROM {0} as total_{1}; ",tableName,tableName));
+            txtResult.AppendText(sb.ToString());
+        }
+
         #endregion
 
         #region For Stored Procedure
@@ -269,22 +305,22 @@ namespace MySQL_SP_Query_Generator
                         mode = string.Format(" CREATE DEFINER=`{0}`@`{1}` ", userId, server);
                     }
 
-                    if (cbxSelect.Checked == true)
+                    if (cbxSelect.Checked || cbxSelectFKUN.Checked)
                     {
                         this.GenerateSelectStoredProcedure(tableName, dtInfo, mode);
                     }
 
-                    if (cbxInsert.Checked == true)
+                    if (cbxInsert.Checked)
                     {
                         this.GenerateInsertStoredProcedure(tableName, dtInfo, mode);
                     }
 
-                    if (cbxUpdate.Checked == true)
+                    if (cbxUpdate.Checked || cbxUpdateFKUN.Checked)
                     {
                         this.GenerateUpdateStoredProcedure(tableName, dtInfo, mode);
                     }
 
-                    if (cbxDelete.Checked == true)
+                    if (cbxDelete.Checked || cbxDeleteFKUN.Checked)
                     {
                         this.GenerateDeleteStoredProcedure(tableName, dtInfo, mode);
                     }
@@ -305,7 +341,7 @@ namespace MySQL_SP_Query_Generator
 
         private void GenerateSelectStoredProcedure(string tableName, DataTable tableInfo, string mode)
         {
-            DataRow[] rows = tableInfo.Select(" Key <>'' ");
+            DataRow[] rows = tableInfo.Select(this.getFilterExpression(cbxSelect, cbxSelectFKUN));
 
             for (int a = 0; a < rows.Length; a++)
             {
@@ -408,7 +444,7 @@ namespace MySQL_SP_Query_Generator
 
         private void GenerateUpdateStoredProcedure(string tableName, DataTable tableInfo, string mode)
         {
-            DataRow[] rows = tableInfo.Select(" Key <>'' ");
+            DataRow[] rows = tableInfo.Select(this.getFilterExpression(cbxUpdate, cbxUpdateFKUN));
 
             for (int a = 0; a < rows.Length; a++)
             {
@@ -461,7 +497,7 @@ namespace MySQL_SP_Query_Generator
 
         private void GenerateDeleteStoredProcedure(string tableName, DataTable tableInfo, string mode)
         {
-            DataRow[] rows = tableInfo.Select(" Key <>'' ");
+            DataRow[] rows = tableInfo.Select(this.getFilterExpression(cbxDelete, cbxDeleteFKUN));
 
             for (int a = 0; a < rows.Length; a++)
             {
