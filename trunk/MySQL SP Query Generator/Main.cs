@@ -144,6 +144,8 @@ namespace MySQL_SP_Query_Generator
                     conn.Close();
                 }
             }
+
+            conn = null;
         }
 
         private void GenerateSelectQuery(string tableName, DataTable tableInfo)
@@ -153,6 +155,7 @@ namespace MySQL_SP_Query_Generator
             for (int a = 0; a < rows.Length; a++)
             {
                 StringBuilder sb = new StringBuilder();
+                sb.AppendLine(Environment.NewLine);
                 string fieldName = rows[a]["Field"].ToString().ToLower();
                 sb.AppendLine(" SELECT ");
                 string columns = string.Empty;
@@ -182,6 +185,7 @@ namespace MySQL_SP_Query_Generator
         {
             string columns = string.Empty;
             StringBuilder sb = new StringBuilder();
+            sb.AppendLine(Environment.NewLine);
             sb.AppendLine(string.Format(" INSERT INTO {0}( ", tableName));
             columns = string.Empty;
             for (int i = 0; i < tableInfo.Rows.Count; i++)
@@ -226,6 +230,7 @@ namespace MySQL_SP_Query_Generator
                 string columns = string.Empty;
                 string fieldName = rows[a]["Field"].ToString().ToLower();
                 StringBuilder sb = new StringBuilder();
+                sb.AppendLine(Environment.NewLine);
                 sb.AppendLine(string.Format(" UPDATE {0} SET ", tableName));
 
                 columns = string.Empty;
@@ -255,6 +260,7 @@ namespace MySQL_SP_Query_Generator
             {
                 string fieldName = rows[a]["Field"].ToString().ToLower();
                 StringBuilder sb = new StringBuilder();
+                sb.AppendLine(Environment.NewLine);
                 sb.AppendLine(string.Format(" DELETE FROM {0} WHERE {1} = {2} ;", tableName, fieldName, fieldName));
                 sb.AppendLine(Environment.NewLine);
                 txtResult.AppendText(sb.ToString());
@@ -264,8 +270,9 @@ namespace MySQL_SP_Query_Generator
         private void GenerateCountQuery(string tableName)
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append(Environment.NewLine);
+            sb.AppendLine(Environment.NewLine);
             sb.Append(string.Format(" Select COUNT(1) FROM {0} as total_{1}; ",tableName,tableName));
+            sb.Append(Environment.NewLine);
             txtResult.AppendText(sb.ToString());
         }
 
@@ -323,6 +330,11 @@ namespace MySQL_SP_Query_Generator
                     if (cbxDelete.Checked || cbxDeleteFKUN.Checked)
                     {
                         this.GenerateDeleteStoredProcedure(tableName, dtInfo, mode);
+                    }
+
+                    if (cbxCount.Checked)
+                    {
+                        this.GenerateSPForCount(tableName, mode);
                     }
 
                 }
@@ -544,6 +556,20 @@ namespace MySQL_SP_Query_Generator
 
         }
 
+        private void GenerateSPForCount(string tableName, string mode)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(" DELIMITER ; ");
+            sb.AppendLine(string.Format(" DROP procedure IF EXISTS `{0}_count`; ", tableName));
+            sb.AppendLine(" DELIMITER $$ ");
+            sb.AppendLine(string.Format(" {0} PROCEDURE `{1}`.`{2}_count`() ", mode, database, tableName));
+            sb.AppendLine(" BEGIN ");
+            sb.AppendLine(string.Format(" SELECT COUNT(1) as total_{0} FROM {1}  ;", tableName, tableName));
+            sb.AppendLine(" END $$ ");
+            sb.AppendLine(Environment.NewLine);
+            txtResult.AppendText(sb.ToString());
+        }
+
         private void rbStoredProc_CheckedChanged(object sender, EventArgs e)
         {
             if (rbStoredProc.Checked == true)
@@ -637,6 +663,10 @@ namespace MySQL_SP_Query_Generator
 
         private void btnConnect_Click(object sender, EventArgs e)
         {
+            if (this.ConnectionPrerequisite() == false)
+            {
+                return;
+            }
             conn = GetConnection();
 
             try
@@ -660,6 +690,33 @@ namespace MySQL_SP_Query_Generator
                 conn.Close();
                 conn = null;
             }
+        }
+
+        private bool ConnectionPrerequisite()
+        {
+            if (txtServer.Text.Equals(""))
+            {
+                MessageBox.Show("Server is required","Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                txtServer.Focus();
+                return false;
+            }
+
+            if (txtPort.Text.Equals(""))
+            {
+                MessageBox.Show("Port is required", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                txtPort.Focus();
+                return false;
+            }
+
+            if (txtDB.Text.Equals(""))
+            {
+                MessageBox.Show("Database name is required", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                txtDB.Focus();
+                return false;
+            }
+
+
+            return true;
         }
 
         #endregion

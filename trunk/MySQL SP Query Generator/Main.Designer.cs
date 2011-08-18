@@ -112,7 +112,6 @@
             this.txtDB.Name = "txtDB";
             this.txtDB.Size = new System.Drawing.Size(150, 22);
             this.txtDB.TabIndex = 9;
-            this.txtDB.Text = "wordpress321";
             // 
             // label5
             // 
