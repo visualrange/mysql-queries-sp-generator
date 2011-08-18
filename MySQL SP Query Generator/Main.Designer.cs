@@ -64,6 +64,10 @@
             this.gbResult = new System.Windows.Forms.GroupBox();
             this.txtResult = new System.Windows.Forms.TextBox();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.cbxSelectFKUN = new System.Windows.Forms.CheckBox();
+            this.cbxUpdateFKUN = new System.Windows.Forms.CheckBox();
+            this.cbxDeleteFKUN = new System.Windows.Forms.CheckBox();
+            this.cbxCount = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.gbSelectTables.SuspendLayout();
@@ -269,6 +273,10 @@
             // 
             // gbOptions
             // 
+            this.gbOptions.Controls.Add(this.cbxCount);
+            this.gbOptions.Controls.Add(this.cbxDeleteFKUN);
+            this.gbOptions.Controls.Add(this.cbxUpdateFKUN);
+            this.gbOptions.Controls.Add(this.cbxSelectFKUN);
             this.gbOptions.Controls.Add(this.rbDrop);
             this.gbOptions.Controls.Add(this.btnGenerate);
             this.gbOptions.Controls.Add(this.panelCreateAlter);
@@ -281,7 +289,7 @@
             this.gbOptions.Enabled = false;
             this.gbOptions.Location = new System.Drawing.Point(188, 87);
             this.gbOptions.Name = "gbOptions";
-            this.gbOptions.Size = new System.Drawing.Size(689, 75);
+            this.gbOptions.Size = new System.Drawing.Size(689, 134);
             this.gbOptions.TabIndex = 4;
             this.gbOptions.TabStop = false;
             this.gbOptions.Text = "Options";
@@ -299,7 +307,7 @@
             // 
             // btnGenerate
             // 
-            this.btnGenerate.Location = new System.Drawing.Point(583, 25);
+            this.btnGenerate.Location = new System.Drawing.Point(583, 105);
             this.btnGenerate.Name = "btnGenerate";
             this.btnGenerate.Size = new System.Drawing.Size(94, 23);
             this.btnGenerate.TabIndex = 6;
@@ -342,7 +350,7 @@
             // cbxDelete
             // 
             this.cbxDelete.AutoSize = true;
-            this.cbxDelete.Location = new System.Drawing.Point(503, 42);
+            this.cbxDelete.Location = new System.Drawing.Point(418, 96);
             this.cbxDelete.Name = "cbxDelete";
             this.cbxDelete.Size = new System.Drawing.Size(71, 21);
             this.cbxDelete.TabIndex = 5;
@@ -352,7 +360,7 @@
             // cbxUpdate
             // 
             this.cbxUpdate.AutoSize = true;
-            this.cbxUpdate.Location = new System.Drawing.Point(418, 44);
+            this.cbxUpdate.Location = new System.Drawing.Point(418, 69);
             this.cbxUpdate.Name = "cbxUpdate";
             this.cbxUpdate.Size = new System.Drawing.Size(76, 21);
             this.cbxUpdate.TabIndex = 4;
@@ -362,7 +370,7 @@
             // cbxInsert
             // 
             this.cbxInsert.AutoSize = true;
-            this.cbxInsert.Location = new System.Drawing.Point(503, 15);
+            this.cbxInsert.Location = new System.Drawing.Point(418, 43);
             this.cbxInsert.Name = "cbxInsert";
             this.cbxInsert.Size = new System.Drawing.Size(65, 21);
             this.cbxInsert.TabIndex = 3;
@@ -406,9 +414,9 @@
             // 
             this.gbResult.Controls.Add(this.txtResult);
             this.gbResult.Enabled = false;
-            this.gbResult.Location = new System.Drawing.Point(188, 168);
+            this.gbResult.Location = new System.Drawing.Point(188, 227);
             this.gbResult.Name = "gbResult";
-            this.gbResult.Size = new System.Drawing.Size(692, 377);
+            this.gbResult.Size = new System.Drawing.Size(692, 318);
             this.gbResult.TabIndex = 5;
             this.gbResult.TabStop = false;
             this.gbResult.Text = "Result";
@@ -423,12 +431,52 @@
             this.txtResult.Name = "txtResult";
             this.txtResult.ReadOnly = true;
             this.txtResult.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtResult.Size = new System.Drawing.Size(686, 356);
+            this.txtResult.Size = new System.Drawing.Size(686, 297);
             this.txtResult.TabIndex = 0;
             // 
             // saveFileDialog1
             // 
             this.saveFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog1_FileOk);
+            // 
+            // cbxSelectFKUN
+            // 
+            this.cbxSelectFKUN.AutoSize = true;
+            this.cbxSelectFKUN.Location = new System.Drawing.Point(508, 15);
+            this.cbxSelectFKUN.Name = "cbxSelectFKUN";
+            this.cbxSelectFKUN.Size = new System.Drawing.Size(139, 21);
+            this.cbxSelectFKUN.TabIndex = 7;
+            this.cbxSelectFKUN.Text = "Select For FK/UN";
+            this.cbxSelectFKUN.UseVisualStyleBackColor = true;
+            // 
+            // cbxUpdateFKUN
+            // 
+            this.cbxUpdateFKUN.AutoSize = true;
+            this.cbxUpdateFKUN.Location = new System.Drawing.Point(508, 39);
+            this.cbxUpdateFKUN.Name = "cbxUpdateFKUN";
+            this.cbxUpdateFKUN.Size = new System.Drawing.Size(146, 21);
+            this.cbxUpdateFKUN.TabIndex = 8;
+            this.cbxUpdateFKUN.Text = "Update For FK/UN";
+            this.cbxUpdateFKUN.UseVisualStyleBackColor = true;
+            // 
+            // cbxDeleteFKUN
+            // 
+            this.cbxDeleteFKUN.AutoSize = true;
+            this.cbxDeleteFKUN.Location = new System.Drawing.Point(508, 65);
+            this.cbxDeleteFKUN.Name = "cbxDeleteFKUN";
+            this.cbxDeleteFKUN.Size = new System.Drawing.Size(141, 21);
+            this.cbxDeleteFKUN.TabIndex = 9;
+            this.cbxDeleteFKUN.Text = "Delete For FK/UN";
+            this.cbxDeleteFKUN.UseVisualStyleBackColor = true;
+            // 
+            // cbxCount
+            // 
+            this.cbxCount.AutoSize = true;
+            this.cbxCount.Location = new System.Drawing.Point(508, 93);
+            this.cbxCount.Name = "cbxCount";
+            this.cbxCount.Size = new System.Drawing.Size(62, 21);
+            this.cbxCount.TabIndex = 10;
+            this.cbxCount.Text = "Total";
+            this.cbxCount.UseVisualStyleBackColor = true;
             // 
             // Main
             // 
@@ -499,6 +547,10 @@
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.RadioButton rbDrop;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.CheckBox cbxDeleteFKUN;
+        private System.Windows.Forms.CheckBox cbxUpdateFKUN;
+        private System.Windows.Forms.CheckBox cbxSelectFKUN;
+        private System.Windows.Forms.CheckBox cbxCount;
     }
 }
 
