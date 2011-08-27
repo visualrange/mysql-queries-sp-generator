@@ -533,9 +533,11 @@ namespace MySQL_SP_Query_Generator
                 sb.AppendLine(" DELIMITER ; ");
                 sb.AppendLine(string.Format(" DROP procedure IF EXISTS `{0}_delete_by_{1}`; ", tableName, fieldName));
                 sb.AppendLine(" DELIMITER $$ ");
-                sb.AppendLine(string.Format(" {0} PROCEDURE `{1}`.`{2}_delete_by_{3}`() ", mode, database, tableName, fieldName));
+                sb.AppendLine(string.Format(" {0} PROCEDURE `{1}`.`{2}_delete_by_{3}`( ", mode, database, tableName, fieldName));
+                sb.AppendLine(string.Format("in p_{0} {1}", rows[a].ItemArray[0].ToString(), rows[a].ItemArray[1].ToString()));
+                sb.AppendLine(")");
                 sb.AppendLine(" BEGIN ");
-                sb.AppendLine(string.Format(" DELETE FROM {0} WHERE `{1}` = {2} ;", tableName, fieldName, fieldName));
+                sb.AppendLine(string.Format(" DELETE FROM {0} WHERE `{1}` = p_{2} ;", tableName, fieldName, rows[a].ItemArray[0].ToString()));
                 
                 if (cbxRowsAffected.Checked)
                 {
