@@ -68,6 +68,8 @@
             this.gbResult = new System.Windows.Forms.GroupBox();
             this.txtResult = new System.Windows.Forms.TextBox();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.cbxLasterInsertId = new System.Windows.Forms.CheckBox();
+            this.cbxRowsAffected = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.gbSelectTables.SuspendLayout();
@@ -272,6 +274,8 @@
             // 
             // gbOptions
             // 
+            this.gbOptions.Controls.Add(this.cbxRowsAffected);
+            this.gbOptions.Controls.Add(this.cbxLasterInsertId);
             this.gbOptions.Controls.Add(this.cbxCount);
             this.gbOptions.Controls.Add(this.cbxDeleteFKUN);
             this.gbOptions.Controls.Add(this.cbxUpdateFKUN);
@@ -288,7 +292,7 @@
             this.gbOptions.Enabled = false;
             this.gbOptions.Location = new System.Drawing.Point(188, 87);
             this.gbOptions.Name = "gbOptions";
-            this.gbOptions.Size = new System.Drawing.Size(689, 134);
+            this.gbOptions.Size = new System.Drawing.Size(689, 226);
             this.gbOptions.TabIndex = 4;
             this.gbOptions.TabStop = false;
             this.gbOptions.Text = "Options";
@@ -346,7 +350,7 @@
             // 
             // btnGenerate
             // 
-            this.btnGenerate.Location = new System.Drawing.Point(583, 105);
+            this.btnGenerate.Location = new System.Drawing.Point(583, 197);
             this.btnGenerate.Name = "btnGenerate";
             this.btnGenerate.Size = new System.Drawing.Size(94, 23);
             this.btnGenerate.TabIndex = 6;
@@ -453,9 +457,9 @@
             // 
             this.gbResult.Controls.Add(this.txtResult);
             this.gbResult.Enabled = false;
-            this.gbResult.Location = new System.Drawing.Point(188, 227);
+            this.gbResult.Location = new System.Drawing.Point(188, 319);
             this.gbResult.Name = "gbResult";
-            this.gbResult.Size = new System.Drawing.Size(692, 318);
+            this.gbResult.Size = new System.Drawing.Size(692, 226);
             this.gbResult.TabIndex = 5;
             this.gbResult.TabStop = false;
             this.gbResult.Text = "Result";
@@ -470,12 +474,32 @@
             this.txtResult.Name = "txtResult";
             this.txtResult.ReadOnly = true;
             this.txtResult.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtResult.Size = new System.Drawing.Size(686, 297);
+            this.txtResult.Size = new System.Drawing.Size(686, 205);
             this.txtResult.TabIndex = 0;
             // 
             // saveFileDialog1
             // 
             this.saveFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog1_FileOk);
+            // 
+            // cbxLasterInsertId
+            // 
+            this.cbxLasterInsertId.AutoSize = true;
+            this.cbxLasterInsertId.Location = new System.Drawing.Point(508, 121);
+            this.cbxLasterInsertId.Name = "cbxLasterInsertId";
+            this.cbxLasterInsertId.Size = new System.Drawing.Size(111, 21);
+            this.cbxLasterInsertId.TabIndex = 11;
+            this.cbxLasterInsertId.Text = "Last Insert Id";
+            this.cbxLasterInsertId.UseVisualStyleBackColor = true;
+            // 
+            // cbxRowsAffected
+            // 
+            this.cbxRowsAffected.AutoSize = true;
+            this.cbxRowsAffected.Location = new System.Drawing.Point(508, 149);
+            this.cbxRowsAffected.Name = "cbxRowsAffected";
+            this.cbxRowsAffected.Size = new System.Drawing.Size(120, 21);
+            this.cbxRowsAffected.TabIndex = 12;
+            this.cbxRowsAffected.Text = "Rows Affected";
+            this.cbxRowsAffected.UseVisualStyleBackColor = true;
             // 
             // Main
             // 
@@ -550,6 +574,8 @@
         private System.Windows.Forms.CheckBox cbxUpdateFKUN;
         private System.Windows.Forms.CheckBox cbxSelectFKUN;
         private System.Windows.Forms.CheckBox cbxCount;
+        private System.Windows.Forms.CheckBox cbxRowsAffected;
+        private System.Windows.Forms.CheckBox cbxLasterInsertId;
     }
 }
 

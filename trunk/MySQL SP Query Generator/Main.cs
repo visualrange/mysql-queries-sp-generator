@@ -357,18 +357,20 @@ namespace MySQL_SP_Query_Generator
 
             for (int a = 0; a < rows.Length; a++)
             {
+                string columns = string.Empty;
                 StringBuilder sb = new StringBuilder();
                 string fieldName = rows[a]["Field"].ToString().ToLower();
                 sb.AppendLine(" DELIMITER ; ");
                 sb.AppendLine(string.Format("DROP procedure IF EXISTS `{0}_get_by_{1}`;", tableName, fieldName));
                 sb.AppendLine(" DELIMITER $$ ");
-                sb.AppendLine(string.Format(" {0} PROCEDURE `{1}`.`{2}_get_by_{3}`() ", mode, database, tableName, fieldName));
+                sb.AppendLine(string.Format(" {0} PROCEDURE `{1}`.`{2}_get_by_{3}`( ", mode, database, tableName, fieldName));
+                sb.AppendLine(string.Format("in p_{0} {1}", rows[a].ItemArray[0].ToString(), rows[a].ItemArray[1].ToString()));
+                sb.AppendLine(")");
+
                 sb.AppendLine(" BEGIN ");
                 sb.AppendLine(" SELECT ");
-                string columns = string.Empty;
 
-
-
+                columns = string.Empty;
                 for (int i = 0; i < tableInfo.Rows.Count; i++)
                 {
                     if (i == (tableInfo.Rows.Count - 1))
@@ -382,7 +384,8 @@ namespace MySQL_SP_Query_Generator
 
                 sb.AppendLine(columns);
                 sb.AppendLine(string.Format(" From {0}  ", tableName));
-                sb.AppendLine(string.Format(" WHERE {0} = {1}; ", fieldName, fieldName));
+                sb.AppendLine(string.Format(" WHERE {0} = p_{1}; ", fieldName, fieldName));
+
                 sb.AppendLine(" END $$ ");
                 sb.AppendLine(Environment.NewLine);
 
@@ -406,11 +409,11 @@ namespace MySQL_SP_Query_Generator
             {
                 if (i == (tableInfo.Rows.Count - 1))
                 {
-                    columns += " in " + tableInfo.Rows[i]["Field"].ToString() + " " + tableInfo.Rows[i]["Type"].ToString();
+                    columns += " in p_" + tableInfo.Rows[i]["Field"].ToString() + " " + tableInfo.Rows[i]["Type"].ToString();
                     continue;
                 }
 
-                columns += " in " + tableInfo.Rows[i]["Field"].ToString() + " " + tableInfo.Rows[i]["Type"].ToString() + ", ";
+                columns += " in p_" + tableInfo.Rows[i]["Field"].ToString() + " " + tableInfo.Rows[i]["Type"].ToString() + ", ";
             }
 
             sb.AppendLine(columns);
@@ -439,14 +442,20 @@ namespace MySQL_SP_Query_Generator
             {
                 if (y == (tableInfo.Rows.Count - 1))
                 {
-                    columns += tableInfo.Rows[y]["Field"].ToString() + ");";
+                    columns += "p_" + tableInfo.Rows[y]["Field"].ToString() + ");";
                     continue;
                 }
 
-                columns += tableInfo.Rows[y]["Field"].ToString() + ", ";
+                columns += "p_" + tableInfo.Rows[y]["Field"].ToString() + ", ";
             }
 
             sb.AppendLine(columns);
+
+            if (cbxLasterInsertId.Checked)
+            {
+                sb.AppendLine(" select last_insert_id(); ");
+            }
+
             sb.AppendLine(" END $$ ");
             sb.AppendLine(Environment.NewLine);
 
@@ -473,11 +482,11 @@ namespace MySQL_SP_Query_Generator
                 {
                     if (i == (tableInfo.Rows.Count - 1))
                     {
-                        columns += " in " + tableInfo.Rows[i]["Field"].ToString() + " " + tableInfo.Rows[i]["Type"].ToString();
+                        columns += " in p_" + tableInfo.Rows[i]["Field"].ToString() + " " + tableInfo.Rows[i]["Type"].ToString();
                         continue;
                     }
 
-                    columns += " in " + tableInfo.Rows[i]["Field"].ToString() + " " + tableInfo.Rows[i]["Type"].ToString() + ", ";
+                    columns += " in p_" + tableInfo.Rows[i]["Field"].ToString() + " " + tableInfo.Rows[i]["Type"].ToString() + ", ";
                 }
 
                 sb.AppendLine(columns);
@@ -491,15 +500,21 @@ namespace MySQL_SP_Query_Generator
                 {
                     if (i == (tableInfo.Rows.Count - 1))
                     {
-                        columns += "`" + tableInfo.Rows[i]["Field"].ToString() + "` = " + tableInfo.Rows[i]["Field"].ToString();
+                        columns += "`" + tableInfo.Rows[i]["Field"].ToString() + "` = p_" + tableInfo.Rows[i]["Field"].ToString();
                         continue;
                     }
 
-                    columns += " `" + tableInfo.Rows[i]["Field"].ToString() + "` = " + tableInfo.Rows[i]["Field"].ToString() + ", ";
+                    columns += " `" + tableInfo.Rows[i]["Field"].ToString() + "` = p_" + tableInfo.Rows[i]["Field"].ToString() + ", ";
                 }
 
                 sb.AppendLine(columns);
-                sb.AppendLine(string.Format(" WHERE `{0}` = {1} ;", fieldName, fieldName));
+                sb.AppendLine(string.Format(" WHERE `{0}` = p_{1} ;", fieldName, fieldName));
+
+                if (cbxRowsAffected.Checked)
+                {
+                    sb.AppendLine(" select row_count(); ");
+                }
+
                 sb.AppendLine(" END $$ ");
                 sb.AppendLine(Environment.NewLine);
 
@@ -521,6 +536,12 @@ namespace MySQL_SP_Query_Generator
                 sb.AppendLine(string.Format(" {0} PROCEDURE `{1}`.`{2}_delete_by_{3}`() ", mode, database, tableName, fieldName));
                 sb.AppendLine(" BEGIN ");
                 sb.AppendLine(string.Format(" DELETE FROM {0} WHERE `{1}` = {2} ;", tableName, fieldName, fieldName));
+                
+                if (cbxRowsAffected.Checked)
+                {
+                    sb.AppendLine(" select row_count(); ");
+                }
+
                 sb.AppendLine(" END $$ ");
                 sb.AppendLine(Environment.NewLine);
                 txtResult.AppendText(sb.ToString());
