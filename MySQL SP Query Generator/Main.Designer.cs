@@ -50,6 +50,8 @@
             this.gbSelectTables = new System.Windows.Forms.GroupBox();
             this.btnSelectAll = new System.Windows.Forms.Button();
             this.gbOptions = new System.Windows.Forms.GroupBox();
+            this.cbxRowsAffected = new System.Windows.Forms.CheckBox();
+            this.cbxLasterInsertId = new System.Windows.Forms.CheckBox();
             this.cbxCount = new System.Windows.Forms.CheckBox();
             this.cbxDeleteFKUN = new System.Windows.Forms.CheckBox();
             this.cbxUpdateFKUN = new System.Windows.Forms.CheckBox();
@@ -68,8 +70,7 @@
             this.gbResult = new System.Windows.Forms.GroupBox();
             this.txtResult = new System.Windows.Forms.TextBox();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.cbxLasterInsertId = new System.Windows.Forms.CheckBox();
-            this.cbxRowsAffected = new System.Windows.Forms.CheckBox();
+            this.cbxDollarSign = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.gbSelectTables.SuspendLayout();
@@ -274,6 +275,7 @@
             // 
             // gbOptions
             // 
+            this.gbOptions.Controls.Add(this.cbxDollarSign);
             this.gbOptions.Controls.Add(this.cbxRowsAffected);
             this.gbOptions.Controls.Add(this.cbxLasterInsertId);
             this.gbOptions.Controls.Add(this.cbxCount);
@@ -296,6 +298,26 @@
             this.gbOptions.TabIndex = 4;
             this.gbOptions.TabStop = false;
             this.gbOptions.Text = "Options";
+            // 
+            // cbxRowsAffected
+            // 
+            this.cbxRowsAffected.AutoSize = true;
+            this.cbxRowsAffected.Location = new System.Drawing.Point(508, 149);
+            this.cbxRowsAffected.Name = "cbxRowsAffected";
+            this.cbxRowsAffected.Size = new System.Drawing.Size(120, 21);
+            this.cbxRowsAffected.TabIndex = 12;
+            this.cbxRowsAffected.Text = "Rows Affected";
+            this.cbxRowsAffected.UseVisualStyleBackColor = true;
+            // 
+            // cbxLasterInsertId
+            // 
+            this.cbxLasterInsertId.AutoSize = true;
+            this.cbxLasterInsertId.Location = new System.Drawing.Point(508, 121);
+            this.cbxLasterInsertId.Name = "cbxLasterInsertId";
+            this.cbxLasterInsertId.Size = new System.Drawing.Size(111, 21);
+            this.cbxLasterInsertId.TabIndex = 11;
+            this.cbxLasterInsertId.Text = "Last Insert Id";
+            this.cbxLasterInsertId.UseVisualStyleBackColor = true;
             // 
             // cbxCount
             // 
@@ -452,6 +474,7 @@
             this.rbInline.TabStop = true;
             this.rbInline.Text = "Inline Query";
             this.rbInline.UseVisualStyleBackColor = true;
+            this.rbInline.CheckedChanged += new System.EventHandler(this.rbInline_CheckedChanged);
             // 
             // gbResult
             // 
@@ -481,25 +504,16 @@
             // 
             this.saveFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog1_FileOk);
             // 
-            // cbxLasterInsertId
+            // cbxDollarSign
             // 
-            this.cbxLasterInsertId.AutoSize = true;
-            this.cbxLasterInsertId.Location = new System.Drawing.Point(508, 121);
-            this.cbxLasterInsertId.Name = "cbxLasterInsertId";
-            this.cbxLasterInsertId.Size = new System.Drawing.Size(111, 21);
-            this.cbxLasterInsertId.TabIndex = 11;
-            this.cbxLasterInsertId.Text = "Last Insert Id";
-            this.cbxLasterInsertId.UseVisualStyleBackColor = true;
-            // 
-            // cbxRowsAffected
-            // 
-            this.cbxRowsAffected.AutoSize = true;
-            this.cbxRowsAffected.Location = new System.Drawing.Point(508, 149);
-            this.cbxRowsAffected.Name = "cbxRowsAffected";
-            this.cbxRowsAffected.Size = new System.Drawing.Size(120, 21);
-            this.cbxRowsAffected.TabIndex = 12;
-            this.cbxRowsAffected.Text = "Rows Affected";
-            this.cbxRowsAffected.UseVisualStyleBackColor = true;
+            this.cbxDollarSign.AutoSize = true;
+            this.cbxDollarSign.Enabled = false;
+            this.cbxDollarSign.Location = new System.Drawing.Point(295, 76);
+            this.cbxDollarSign.Name = "cbxDollarSign";
+            this.cbxDollarSign.Size = new System.Drawing.Size(99, 21);
+            this.cbxDollarSign.TabIndex = 13;
+            this.cbxDollarSign.Text = "Use $ Sign";
+            this.cbxDollarSign.UseVisualStyleBackColor = true;
             // 
             // Main
             // 
@@ -576,6 +590,7 @@
         private System.Windows.Forms.CheckBox cbxCount;
         private System.Windows.Forms.CheckBox cbxRowsAffected;
         private System.Windows.Forms.CheckBox cbxLasterInsertId;
+        private System.Windows.Forms.CheckBox cbxDollarSign;
     }
 }
 

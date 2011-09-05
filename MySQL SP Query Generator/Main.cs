@@ -119,7 +119,7 @@ namespace MySQL_SP_Query_Generator
                         this.GenerateInsertQuery(tableName, dtInfo);
                     }
 
-                    if (cbxUpdate.Checked || cbxSelectFKUN.Checked)
+                    if (cbxUpdate.Checked || cbxUpdateFKUN.Checked)
                     {
                         this.GenerateUpdateQuery(tableName, dtInfo);
                     }
@@ -164,16 +164,25 @@ namespace MySQL_SP_Query_Generator
                 {
                     if (i == (tableInfo.Rows.Count - 1))
                     {
-                        columns += tableInfo.Rows[i]["Field"].ToString();
+                        columns += tableName + "." + tableInfo.Rows[i]["Field"].ToString();
                         continue;
                     }
 
-                    columns += tableInfo.Rows[i]["Field"].ToString() + ", ";
+                    columns += tableName+ "." + tableInfo.Rows[i]["Field"].ToString() + ", ";
                 }
 
                 sb.AppendLine(columns);
                 sb.AppendLine(string.Format(" From {0}  ", tableName));
-                sb.AppendLine(string.Format(" WHERE {0} = {1}; ", fieldName, fieldName));
+                
+                if (cbxDollarSign.Checked)
+                {
+                    sb.AppendLine(string.Format(" WHERE {0}.{1} = ${2}; ", tableName, fieldName, fieldName));
+                }
+                else
+                {
+                    sb.AppendLine(string.Format(" WHERE {0}.{1} = {2}; ", tableName, fieldName, fieldName));
+                }
+                
                 sb.AppendLine(Environment.NewLine);
 
                 txtResult.AppendText(sb.ToString());
@@ -183,6 +192,13 @@ namespace MySQL_SP_Query_Generator
 
         private void GenerateInsertQuery(string tableName, DataTable tableInfo)
         {
+            string dollarSign = string.Empty;
+
+            if (cbxDollarSign.Checked)
+            {
+                dollarSign = "$";
+            }
+
             string columns = string.Empty;
             StringBuilder sb = new StringBuilder();
             sb.AppendLine(Environment.NewLine);
@@ -190,6 +206,11 @@ namespace MySQL_SP_Query_Generator
             columns = string.Empty;
             for (int i = 0; i < tableInfo.Rows.Count; i++)
             {
+                if (tableInfo.Rows[i]["Extra"].ToString().Equals("auto_increment"))
+                {
+                    continue;
+                }
+
                 if (i == (tableInfo.Rows.Count - 1))
                 {
                     columns += tableInfo.Rows[i]["Field"].ToString() + ")";
@@ -205,13 +226,18 @@ namespace MySQL_SP_Query_Generator
             sb.AppendLine(" values(");
             for (int y = 0; y < tableInfo.Rows.Count; y++)
             {
-                if (y == (tableInfo.Rows.Count - 1))
+                if (tableInfo.Rows[y]["Extra"].ToString().Equals("auto_increment"))
                 {
-                    columns += tableInfo.Rows[y]["Field"].ToString() + ");";
                     continue;
                 }
 
-                columns += tableInfo.Rows[y]["Field"].ToString() + ", ";
+                if (y == (tableInfo.Rows.Count - 1))
+                {
+                    columns += dollarSign + tableInfo.Rows[y]["Field"].ToString() + ");";
+                    continue;
+                }
+
+                columns += dollarSign + tableInfo.Rows[y]["Field"].ToString() + ", ";
             }
 
             sb.AppendLine(columns);
@@ -221,6 +247,12 @@ namespace MySQL_SP_Query_Generator
 
         private void GenerateUpdateQuery(string tableName, DataTable tableInfo)
         {
+            string dollarSign = string.Empty;
+
+            if (cbxDollarSign.Checked)
+            {
+                dollarSign = "$";
+            }
 
             DataRow[] rows = tableInfo.Select(this.getFilterExpression(cbxUpdate, cbxUpdateFKUN));
 
@@ -236,17 +268,22 @@ namespace MySQL_SP_Query_Generator
                 columns = string.Empty;
                 for (int i = 0; i < tableInfo.Rows.Count; i++)
                 {
-                    if (i == (tableInfo.Rows.Count - 1))
+                    if (tableInfo.Rows[i]["Extra"].ToString().Equals("auto_increment"))
                     {
-                        columns += tableInfo.Rows[i]["Field"].ToString() + " = $" + tableInfo.Rows[i]["Field"].ToString();
                         continue;
                     }
 
-                    columns += tableInfo.Rows[i]["Field"].ToString() + " = $" + tableInfo.Rows[i]["Field"].ToString() + ", ";
+                    if (i == (tableInfo.Rows.Count - 1))
+                    {
+                        columns += tableInfo.Rows[i]["Field"].ToString() + " = " + dollarSign + tableInfo.Rows[i]["Field"].ToString();
+                        continue;
+                    }
+
+                    columns += tableInfo.Rows[i]["Field"].ToString() + " = " + dollarSign + tableInfo.Rows[i]["Field"].ToString() + ", ";
                 }
 
                 sb.AppendLine(columns);
-                sb.AppendLine(string.Format(" WHERE {0} = ${1} ;", fieldName, fieldName));
+                sb.AppendLine(string.Format(" WHERE {0} = {1}{2} ;", fieldName, dollarSign, fieldName));
                 sb.AppendLine(Environment.NewLine);
                 txtResult.AppendText(sb.ToString());
             }
@@ -254,6 +291,13 @@ namespace MySQL_SP_Query_Generator
 
         private void GenerateDeleteQuery(string tableName, DataTable tableInfo)
         {
+            string dollarSign = string.Empty;
+
+            if (cbxDollarSign.Checked)
+            {
+                dollarSign = "$";
+            }
+
             DataRow[] rows = tableInfo.Select(this.getFilterExpression(cbxDelete, cbxDeleteFKUN));
 
             for (int a = 0; a < rows.Length; a++)
@@ -261,7 +305,7 @@ namespace MySQL_SP_Query_Generator
                 string fieldName = rows[a]["Field"].ToString().ToLower();
                 StringBuilder sb = new StringBuilder();
                 sb.AppendLine(Environment.NewLine);
-                sb.AppendLine(string.Format(" DELETE FROM {0} WHERE {1} = {2} ;", tableName, fieldName, fieldName));
+                sb.AppendLine(string.Format(" DELETE FROM {0} WHERE {1} = {2}{3} ;", tableName, fieldName, dollarSign, fieldName));
                 sb.AppendLine(Environment.NewLine);
                 txtResult.AppendText(sb.ToString());
             }
@@ -375,16 +419,16 @@ namespace MySQL_SP_Query_Generator
                 {
                     if (i == (tableInfo.Rows.Count - 1))
                     {
-                        columns += tableInfo.Rows[i]["Field"].ToString();
+                        columns += tableName + "." + tableInfo.Rows[i]["Field"].ToString();
                         continue;
                     }
 
-                    columns += tableInfo.Rows[i]["Field"].ToString() + ", ";
+                    columns += tableName + "." + tableInfo.Rows[i]["Field"].ToString() + ", ";
                 }
 
                 sb.AppendLine(columns);
                 sb.AppendLine(string.Format(" From {0}  ", tableName));
-                sb.AppendLine(string.Format(" WHERE {0} = p_{1}; ", fieldName, fieldName));
+                sb.AppendLine(string.Format(" WHERE {0}.{1} = p_{1}; ", tableName, fieldName, fieldName));
 
                 sb.AppendLine(" END $$ ");
                 sb.AppendLine(Environment.NewLine);
@@ -407,6 +451,11 @@ namespace MySQL_SP_Query_Generator
 
             for (int i = 0; i < tableInfo.Rows.Count; i++)
             {
+                if (tableInfo.Rows[i]["Extra"].ToString().Equals("auto_increment"))
+                {
+                    continue;
+                }
+
                 if (i == (tableInfo.Rows.Count - 1))
                 {
                     columns += " in p_" + tableInfo.Rows[i]["Field"].ToString() + " " + tableInfo.Rows[i]["Type"].ToString();
@@ -425,6 +474,11 @@ namespace MySQL_SP_Query_Generator
             columns = string.Empty;
             for (int i = 0; i < tableInfo.Rows.Count; i++)
             {
+                if (tableInfo.Rows[i]["Extra"].ToString().Equals("auto_increment"))
+                {
+                    continue;
+                }
+
                 if (i == (tableInfo.Rows.Count - 1))
                 {
                     columns += "`" + tableInfo.Rows[i]["Field"].ToString() + "`)";
@@ -440,6 +494,11 @@ namespace MySQL_SP_Query_Generator
             sb.AppendLine(" values(");
             for (int y = 0; y < tableInfo.Rows.Count; y++)
             {
+                if (tableInfo.Rows[y]["Extra"].ToString().Equals("auto_increment"))
+                {
+                    continue;
+                }
+
                 if (y == (tableInfo.Rows.Count - 1))
                 {
                     columns += "p_" + tableInfo.Rows[y]["Field"].ToString() + ");";
@@ -498,6 +557,11 @@ namespace MySQL_SP_Query_Generator
                 columns = string.Empty;
                 for (int i = 0; i < tableInfo.Rows.Count; i++)
                 {
+                    if (tableInfo.Rows[i]["Extra"].ToString().Equals("auto_increment"))
+                    {
+                        continue;
+                    }
+
                     if (i == (tableInfo.Rows.Count - 1))
                     {
                         columns += "`" + tableInfo.Rows[i]["Field"].ToString() + "` = p_" + tableInfo.Rows[i]["Field"].ToString();
@@ -743,6 +807,19 @@ namespace MySQL_SP_Query_Generator
         }
 
         #endregion
+
+        private void rbInline_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rbInline.Checked)
+            {
+                cbxDollarSign.Enabled = true;
+            }
+            else if (rbInline.Checked == false)
+            {
+                cbxDollarSign.Checked = false;
+                cbxDollarSign.Enabled = false;
+            }
+        }
 
     }
 }
