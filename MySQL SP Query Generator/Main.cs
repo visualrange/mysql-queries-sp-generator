@@ -164,15 +164,16 @@ namespace MySQL_SP_Query_Generator
                 {
                     if (i == (tableInfo.Rows.Count - 1))
                     {
-                        columns += tableName + "." + tableInfo.Rows[i]["Field"].ToString();
+                        columns += "\t" + tableName + "." + tableInfo.Rows[i]["Field"].ToString() ;
                         continue;
                     }
 
-                    columns += tableName+ "." + tableInfo.Rows[i]["Field"].ToString() + ", ";
+                    columns += "\t" +  tableName+ "." + tableInfo.Rows[i]["Field"].ToString() + ", " + Environment.NewLine;
                 }
 
                 sb.AppendLine(columns);
                 sb.AppendLine(string.Format(" From {0}  ", tableName));
+                
                 
                 if (cbxDollarSign.Checked)
                 {
@@ -202,7 +203,8 @@ namespace MySQL_SP_Query_Generator
             string columns = string.Empty;
             StringBuilder sb = new StringBuilder();
             sb.AppendLine(Environment.NewLine);
-            sb.AppendLine(string.Format(" INSERT INTO {0}( ", tableName));
+            sb.AppendLine(string.Format(" INSERT INTO {0} ", tableName));
+            sb.AppendLine("(");
             columns = string.Empty;
             for (int i = 0; i < tableInfo.Rows.Count; i++)
             {
@@ -213,17 +215,19 @@ namespace MySQL_SP_Query_Generator
 
                 if (i == (tableInfo.Rows.Count - 1))
                 {
-                    columns += tableInfo.Rows[i]["Field"].ToString() + ")";
+                    columns += "\t" + tableInfo.Rows[i]["Field"].ToString();
                     continue;
                 }
 
-                columns += tableInfo.Rows[i]["Field"].ToString() + ", ";
+                columns += "\t" + tableInfo.Rows[i]["Field"].ToString() + ", " + Environment.NewLine;
             }
 
             sb.AppendLine(columns);
+            sb.AppendLine(")");
 
             columns = string.Empty;
-            sb.AppendLine(" values(");
+            sb.AppendLine(" values");
+            sb.AppendLine("(");
             for (int y = 0; y < tableInfo.Rows.Count; y++)
             {
                 if (tableInfo.Rows[y]["Extra"].ToString().Equals("auto_increment"))
@@ -233,14 +237,15 @@ namespace MySQL_SP_Query_Generator
 
                 if (y == (tableInfo.Rows.Count - 1))
                 {
-                    columns += dollarSign + tableInfo.Rows[y]["Field"].ToString() + ");";
+                    columns += "\t" + dollarSign + tableInfo.Rows[y]["Field"].ToString();
                     continue;
                 }
 
-                columns += dollarSign + tableInfo.Rows[y]["Field"].ToString() + ", ";
+                columns += "\t" + dollarSign + tableInfo.Rows[y]["Field"].ToString() + ", " + Environment.NewLine;
             }
 
             sb.AppendLine(columns);
+            sb.AppendLine(")");
             sb.AppendLine(Environment.NewLine);
             txtResult.AppendText(sb.ToString());
         }
@@ -275,11 +280,11 @@ namespace MySQL_SP_Query_Generator
 
                     if (i == (tableInfo.Rows.Count - 1))
                     {
-                        columns += tableInfo.Rows[i]["Field"].ToString() + " = " + dollarSign + tableInfo.Rows[i]["Field"].ToString();
+                        columns += "\t" + tableInfo.Rows[i]["Field"].ToString() + " = " + dollarSign + tableInfo.Rows[i]["Field"].ToString();
                         continue;
                     }
 
-                    columns += tableInfo.Rows[i]["Field"].ToString() + " = " + dollarSign + tableInfo.Rows[i]["Field"].ToString() + ", ";
+                    columns += "\t" + tableInfo.Rows[i]["Field"].ToString() + " = " + dollarSign + tableInfo.Rows[i]["Field"].ToString() + ", " + Environment.NewLine;
                 }
 
                 sb.AppendLine(columns);
@@ -407,8 +412,9 @@ namespace MySQL_SP_Query_Generator
                 sb.AppendLine(" DELIMITER ; ");
                 sb.AppendLine(string.Format("DROP procedure IF EXISTS `{0}_get_by_{1}`;", tableName, fieldName));
                 sb.AppendLine(" DELIMITER $$ ");
-                sb.AppendLine(string.Format(" {0} PROCEDURE `{1}`.`{2}_get_by_{3}`( ", mode, database, tableName, fieldName));
-                sb.AppendLine(string.Format("in p_{0} {1}", rows[a].ItemArray[0].ToString(), rows[a].ItemArray[1].ToString()));
+                sb.AppendLine(string.Format(" {0} PROCEDURE `{1}`.`{2}_get_by_{3}` ", mode, database, tableName, fieldName));
+                sb.AppendLine("(");
+                sb.AppendLine(string.Format("\t in p_{0} {1}", rows[a].ItemArray[0].ToString(), rows[a].ItemArray[1].ToString()));
                 sb.AppendLine(")");
 
                 sb.AppendLine(" BEGIN ");
@@ -419,11 +425,11 @@ namespace MySQL_SP_Query_Generator
                 {
                     if (i == (tableInfo.Rows.Count - 1))
                     {
-                        columns += tableName + "." + tableInfo.Rows[i]["Field"].ToString();
+                        columns += "\t" + tableName + "." + tableInfo.Rows[i]["Field"].ToString();
                         continue;
                     }
 
-                    columns += tableName + "." + tableInfo.Rows[i]["Field"].ToString() + ", ";
+                    columns += "\t" + tableName + "." + tableInfo.Rows[i]["Field"].ToString() + ", " + Environment.NewLine;
                 }
 
                 sb.AppendLine(columns);
@@ -447,7 +453,8 @@ namespace MySQL_SP_Query_Generator
             sb.AppendLine(" DELIMITER ; ");
             sb.AppendLine(string.Format("DROP procedure IF EXISTS `{0}_add`;", tableName));
             sb.AppendLine(" DELIMITER $$ ");
-            sb.AppendLine(string.Format(" {0} PROCEDURE `{1}`.`{2}_add`( ", mode, database, tableName));
+            sb.AppendLine(string.Format(" {0} PROCEDURE `{1}`.`{2}_add` ", mode, database, tableName));
+            sb.AppendLine("(");
 
             for (int i = 0; i < tableInfo.Rows.Count; i++)
             {
@@ -458,18 +465,19 @@ namespace MySQL_SP_Query_Generator
 
                 if (i == (tableInfo.Rows.Count - 1))
                 {
-                    columns += " in p_" + tableInfo.Rows[i]["Field"].ToString() + " " + tableInfo.Rows[i]["Type"].ToString();
+                    columns += "\t in p_" + tableInfo.Rows[i]["Field"].ToString() + " " + tableInfo.Rows[i]["Type"].ToString();
                     continue;
                 }
 
-                columns += " in p_" + tableInfo.Rows[i]["Field"].ToString() + " " + tableInfo.Rows[i]["Type"].ToString() + ", ";
+                columns += "\t in p_" + tableInfo.Rows[i]["Field"].ToString() + " " + tableInfo.Rows[i]["Type"].ToString() + ", " + Environment.NewLine;
             }
 
             sb.AppendLine(columns);
             sb.AppendLine(")");
             sb.AppendLine(" BEGIN ");
 
-            sb.AppendLine(string.Format(" INSERT INTO {0}( ", tableName));
+            sb.AppendLine(string.Format(" INSERT INTO {0} ", tableName));
+            sb.AppendLine("(");
 
             columns = string.Empty;
             for (int i = 0; i < tableInfo.Rows.Count; i++)
@@ -481,17 +489,19 @@ namespace MySQL_SP_Query_Generator
 
                 if (i == (tableInfo.Rows.Count - 1))
                 {
-                    columns += "`" + tableInfo.Rows[i]["Field"].ToString() + "`)";
+                    columns += "\t `" + tableInfo.Rows[i]["Field"].ToString() + "`";
                     continue;
                 }
 
-                columns += "`" + tableInfo.Rows[i]["Field"].ToString() + "`, ";
+                columns += "\t `" + tableInfo.Rows[i]["Field"].ToString() + "`, " + Environment.NewLine;
             }
 
             sb.AppendLine(columns);
+            sb.AppendLine(")");
 
             columns = string.Empty;
-            sb.AppendLine(" values(");
+            sb.AppendLine(" values");
+            sb.AppendLine("(");
             for (int y = 0; y < tableInfo.Rows.Count; y++)
             {
                 if (tableInfo.Rows[y]["Extra"].ToString().Equals("auto_increment"))
@@ -501,14 +511,15 @@ namespace MySQL_SP_Query_Generator
 
                 if (y == (tableInfo.Rows.Count - 1))
                 {
-                    columns += "p_" + tableInfo.Rows[y]["Field"].ToString() + ");";
+                    columns += "\t p_" + tableInfo.Rows[y]["Field"].ToString() ;
                     continue;
                 }
 
-                columns += "p_" + tableInfo.Rows[y]["Field"].ToString() + ", ";
+                columns += "\t p_" + tableInfo.Rows[y]["Field"].ToString() + ", " + Environment.NewLine;
             }
 
             sb.AppendLine(columns);
+            sb.AppendLine(");");
 
             if (cbxLasterInsertId.Checked)
             {
@@ -535,17 +546,18 @@ namespace MySQL_SP_Query_Generator
                 sb.AppendLine(" DELIMITER ; ");
                 sb.AppendLine(string.Format("DROP procedure IF EXISTS `{0}_update_by_{1}`;", tableName, fieldName));
                 sb.AppendLine(" DELIMITER $$ ");
-                sb.AppendLine(string.Format(" {0} PROCEDURE `{1}`.`{2}_update_by_{3}`( ", mode, database, tableName, fieldName));
+                sb.AppendLine(string.Format(" {0} PROCEDURE `{1}`.`{2}_update_by_{3}` ", mode, database, tableName, fieldName));
+                sb.AppendLine("(");
 
                 for (int i = 0; i < tableInfo.Rows.Count; i++)
                 {
                     if (i == (tableInfo.Rows.Count - 1))
                     {
-                        columns += " in p_" + tableInfo.Rows[i]["Field"].ToString() + " " + tableInfo.Rows[i]["Type"].ToString();
+                        columns += "\t in p_" + tableInfo.Rows[i]["Field"].ToString() + " " + tableInfo.Rows[i]["Type"].ToString();
                         continue;
                     }
 
-                    columns += " in p_" + tableInfo.Rows[i]["Field"].ToString() + " " + tableInfo.Rows[i]["Type"].ToString() + ", ";
+                    columns += "\t in p_" + tableInfo.Rows[i]["Field"].ToString() + " " + tableInfo.Rows[i]["Type"].ToString() + ", " + Environment.NewLine;
                 }
 
                 sb.AppendLine(columns);
@@ -564,11 +576,11 @@ namespace MySQL_SP_Query_Generator
 
                     if (i == (tableInfo.Rows.Count - 1))
                     {
-                        columns += "`" + tableInfo.Rows[i]["Field"].ToString() + "` = p_" + tableInfo.Rows[i]["Field"].ToString();
+                        columns += "\t `" + tableInfo.Rows[i]["Field"].ToString() + "` = p_" + tableInfo.Rows[i]["Field"].ToString();
                         continue;
                     }
 
-                    columns += " `" + tableInfo.Rows[i]["Field"].ToString() + "` = p_" + tableInfo.Rows[i]["Field"].ToString() + ", ";
+                    columns += "\t `" + tableInfo.Rows[i]["Field"].ToString() + "` = p_" + tableInfo.Rows[i]["Field"].ToString() + ", " + Environment.NewLine;
                 }
 
                 sb.AppendLine(columns);
@@ -597,8 +609,9 @@ namespace MySQL_SP_Query_Generator
                 sb.AppendLine(" DELIMITER ; ");
                 sb.AppendLine(string.Format(" DROP procedure IF EXISTS `{0}_delete_by_{1}`; ", tableName, fieldName));
                 sb.AppendLine(" DELIMITER $$ ");
-                sb.AppendLine(string.Format(" {0} PROCEDURE `{1}`.`{2}_delete_by_{3}`( ", mode, database, tableName, fieldName));
-                sb.AppendLine(string.Format("in p_{0} {1}", rows[a].ItemArray[0].ToString(), rows[a].ItemArray[1].ToString()));
+                sb.AppendLine(string.Format(" {0} PROCEDURE `{1}`.`{2}_delete_by_{3}` ", mode, database, tableName, fieldName));
+                sb.AppendLine("(");
+                sb.AppendLine(string.Format("\t in p_{0} {1}", rows[a].ItemArray[0].ToString(), rows[a].ItemArray[1].ToString()));
                 sb.AppendLine(")");
                 sb.AppendLine(" BEGIN ");
                 sb.AppendLine(string.Format(" DELETE FROM {0} WHERE `{1}` = p_{2} ;", tableName, fieldName, rows[a].ItemArray[0].ToString()));
