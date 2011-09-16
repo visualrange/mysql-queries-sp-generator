@@ -50,6 +50,7 @@
             this.gbSelectTables = new System.Windows.Forms.GroupBox();
             this.btnSelectAll = new System.Windows.Forms.Button();
             this.gbOptions = new System.Windows.Forms.GroupBox();
+            this.cbxDollarSign = new System.Windows.Forms.CheckBox();
             this.cbxRowsAffected = new System.Windows.Forms.CheckBox();
             this.cbxLasterInsertId = new System.Windows.Forms.CheckBox();
             this.cbxCount = new System.Windows.Forms.CheckBox();
@@ -70,7 +71,6 @@
             this.gbResult = new System.Windows.Forms.GroupBox();
             this.txtResult = new System.Windows.Forms.TextBox();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.cbxDollarSign = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.gbSelectTables.SuspendLayout();
@@ -299,6 +299,17 @@
             this.gbOptions.TabStop = false;
             this.gbOptions.Text = "Options";
             // 
+            // cbxDollarSign
+            // 
+            this.cbxDollarSign.AutoSize = true;
+            this.cbxDollarSign.Enabled = false;
+            this.cbxDollarSign.Location = new System.Drawing.Point(295, 76);
+            this.cbxDollarSign.Name = "cbxDollarSign";
+            this.cbxDollarSign.Size = new System.Drawing.Size(99, 21);
+            this.cbxDollarSign.TabIndex = 13;
+            this.cbxDollarSign.Text = "Use $ Sign";
+            this.cbxDollarSign.UseVisualStyleBackColor = true;
+            // 
             // cbxRowsAffected
             // 
             this.cbxRowsAffected.AutoSize = true;
@@ -504,17 +515,6 @@
             // 
             this.saveFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog1_FileOk);
             // 
-            // cbxDollarSign
-            // 
-            this.cbxDollarSign.AutoSize = true;
-            this.cbxDollarSign.Enabled = false;
-            this.cbxDollarSign.Location = new System.Drawing.Point(295, 76);
-            this.cbxDollarSign.Name = "cbxDollarSign";
-            this.cbxDollarSign.Size = new System.Drawing.Size(99, 21);
-            this.cbxDollarSign.TabIndex = 13;
-            this.cbxDollarSign.Text = "Use $ Sign";
-            this.cbxDollarSign.UseVisualStyleBackColor = true;
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -529,7 +529,7 @@
             this.MaximizeBox = false;
             this.Name = "Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "MySQL Inline Queries & SP Generator";
+            this.Text = "MySQL Inline Queries & SP Generator - Version: 1.1";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
