@@ -523,7 +523,7 @@ namespace MySQL_SP_Query_Generator
 
             if (cbxLasterInsertId.Checked)
             {
-                sb.AppendLine(" select last_insert_id(); ");
+                sb.AppendLine(" select last_insert_id() as lastInsertId; ");
             }
 
             sb.AppendLine(" END $$ ");
@@ -588,7 +588,7 @@ namespace MySQL_SP_Query_Generator
 
                 if (cbxRowsAffected.Checked)
                 {
-                    sb.AppendLine(" select row_count(); ");
+                    sb.AppendLine(" select row_count() as rowsAffected; ");
                 }
 
                 sb.AppendLine(" END $$ ");
@@ -618,7 +618,7 @@ namespace MySQL_SP_Query_Generator
                 
                 if (cbxRowsAffected.Checked)
                 {
-                    sb.AppendLine(" select row_count(); ");
+                    sb.AppendLine(" select row_count() as rowsAffected; ");
                 }
 
                 sb.AppendLine(" END $$ ");
