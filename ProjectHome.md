@@ -1,0 +1,1 @@
+"MySQL Queries & SP Generator"  generates Inline Queries & Stored Procedure for MySQL database it makes your development rapid. You just need to point database & select options you require.
